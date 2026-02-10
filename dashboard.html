@@ -12,20 +12,23 @@
 
         :root { --primary: #667eea; --secondary: #764ba2; --success: #2ecc71; --danger: #e74c3c; }
 
-        body {
+        html, body {
             font-family: 'Poppins', sans-serif;
             background: #f0f2f5;
-            height: 100vh;
-            /* Mobile par keyboard issue fix karne ke liye */
+            height: 100%;
             height: 100dvh; 
             display: flex;
             flex-direction: column;
             overflow: hidden;
+            position: fixed;
+            width: 100%;
+            top: 0;
+            left: 0;
         }
 
         /* HEADER (Fixed Top) */
         .header {
-            flex: 0 0 auto; /* Header size fix rahega */
+            flex: 0 0 auto;
             background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
             color: white;
             padding: 10px 15px;
@@ -46,12 +49,13 @@
 
         .icon-btn { width: 35px; height: 35px; border-radius: 50%; border: none; background: rgba(255,255,255,0.2); color: white; font-size: 18px; cursor: pointer; margin-left: 5px; }
 
-        /* MAIN CONTAINER (Flexible) */
+        /* MAIN CONTAINER */
         .main-container {
-            flex: 1 1 auto; /* Yeh baaki bachi hui jagah lega */
+            flex: 1;
             display: flex;
             position: relative;
-            overflow: hidden; /* Iske andar scroll hoga */
+            overflow: hidden;
+            height: calc(100% - 60px);
         }
 
         /* CHAT SECTION */
@@ -62,13 +66,14 @@
             height: 100%;
             position: relative;
             background: white;
+            overflow: hidden;
         }
 
-        /* MESSAGES (Scrollable Area) */
+        /* MESSAGES - SCROLLABLE AREA */
         .messages-container {
-            flex: 1 1 0; /* Magic Fix for Scrolling */
-            min-height: 0;
+            flex: 1;
             overflow-y: auto;
+            overflow-x: hidden;
             padding: 15px;
             padding-bottom: 20px;
             display: flex;
@@ -76,10 +81,35 @@
             gap: 10px;
             background: #f4f4f9;
             scroll-behavior: smooth;
-            -webkit-overflow-scrolling: touch; /* iPhone smooth scroll */
+            -webkit-overflow-scrolling: touch;
+            position: relative;
+            /* IMPORTANT: Height calculation */
+            max-height: 100%;
         }
 
-        .message { max-width: 80%; padding: 10px 15px; border-radius: 15px; font-size: 14px; word-wrap: break-word; position: relative; animation: slideIn 0.2s ease; }
+        /* Force scrollbar visible */
+        .messages-container::-webkit-scrollbar {
+            width: 6px;
+        }
+        .messages-container::-webkit-scrollbar-track {
+            background: #f1f1f1;
+        }
+        .messages-container::-webkit-scrollbar-thumb {
+            background: var(--primary);
+            border-radius: 3px;
+        }
+
+        .message { 
+            max-width: 80%; 
+            padding: 10px 15px; 
+            border-radius: 15px; 
+            font-size: 14px; 
+            word-wrap: break-word; 
+            word-break: break-word;
+            position: relative; 
+            animation: slideIn 0.2s ease; 
+            flex-shrink: 0;
+        }
         @keyframes slideIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
 
         .message.sent { align-self: flex-end; background: var(--primary); color: white; border-bottom-right-radius: 2px; }
@@ -88,22 +118,31 @@
 
         /* INPUT AREA (Fixed Bottom) */
         .input-area {
-            flex: 0 0 auto; /* Size fix */
+            flex: 0 0 auto;
             padding: 10px;
             background: white;
             border-top: 1px solid #eee;
             display: flex;
             align-items: center;
             gap: 10px;
+            position: relative;
+            z-index: 10;
         }
 
         .input-wrapper { flex: 1; position: relative; }
         .message-input { width: 100%; padding: 12px 40px 12px 15px; border: 1px solid #ddd; border-radius: 25px; outline: none; font-size: 15px; background: #f9f9f9; }
         .message-input:focus { border-color: var(--primary); background: white; }
         
-        .heart-btn { position: absolute; right: 8px; top: 50%; transform: translateY(-50%); background: none; border: none; font-size: 20px; }
-        .send-btn { width: 45px; height: 45px; border-radius: 50%; background: var(--primary); color: white; border: none; font-size: 20px; display: flex; align-items: center; justify-content: center; box-shadow: 0 2px 5px rgba(0,0,0,0.2); }
+        .heart-btn { position: absolute; right: 8px; top: 50%; transform: translateY(-50%); background: none; border: none; font-size: 20px; cursor: pointer; }
+        .send-btn { width: 45px; height: 45px; border-radius: 50%; background: var(--primary); color: white; border: none; font-size: 20px; display: flex; align-items: center; justify-content: center; box-shadow: 0 2px 5px rgba(0,0,0,0.2); cursor: pointer; }
 
+        /* Mobile fixes */
+        @media (max-width: 768px) {
+            .messages-container {
+                -webkit-overflow-scrolling: touch;
+                overscroll-behavior-y: contain;
+            }
+        }
     </style>
 </head>
 <body>
@@ -127,7 +166,8 @@
     <div class="main-container">
         <div class="chat-section">
             <div class="messages-container" id="messagesContainer">
-                </div>
+                <!-- Messages yahan aayenge -->
+            </div>
             
             <div class="input-area">
                 <div class="input-wrapper">
@@ -143,7 +183,7 @@
     <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-database-compat.js"></script>
 
     <script>
-        // 🔥 TERA CONFIG (Change mat karna agar chal raha hai)
+        // 🔥 TERA CONFIG
         const firebaseConfig = {
           apiKey: "AIzaSyD9izkgUqK9kmxiUd2lsdpgs5Krpkve68E",
           authDomain: "mychattapp-a5fcc.firebaseapp.com",
@@ -194,11 +234,32 @@
         const messagesRef = db.ref('messages');
         const container = document.getElementById('messagesContainer');
 
+        // ✅ FIXED: Better scroll function
         function scrollToBottom() {
             setTimeout(() => {
+                container.scrollTo({
+                    top: container.scrollHeight,
+                    behavior: 'smooth'
+                });
+                // Fallback for older browsers
                 container.scrollTop = container.scrollHeight;
-            }, 100);
+            }, 50);
         }
+
+        // ✅ FIXED: Force scroll on load
+        window.onload = function() {
+            setTimeout(scrollToBottom, 500);
+        };
+
+        // ✅ FIXED: Touch scroll for mobile
+        let touchStartY = 0;
+        container.addEventListener('touchstart', function(e) {
+            touchStartY = e.touches[0].clientY;
+        }, { passive: true });
+
+        container.addEventListener('touchmove', function(e) {
+            // Allow default scrolling
+        }, { passive: true });
 
         // Send Message
         function sendMessage() {
@@ -213,13 +274,19 @@
             });
             input.value = "";
             input.focus();
+            scrollToBottom();
         }
 
         function sendHeart() {
-            messagesRef.push({ sender: currentUser, text: "❤️", timestamp: firebase.database.ServerValue.TIMESTAMP });
+            messagesRef.push({ 
+                sender: currentUser, 
+                text: "❤️", 
+                timestamp: firebase.database.ServerValue.TIMESTAMP 
+            });
+            scrollToBottom();
         }
 
-        // Receive Messages
+        // ✅ FIXED: Receive Messages with forced scroll
         messagesRef.on('child_added', snap => {
             const msg = snap.val();
             const div = document.createElement('div');
@@ -230,497 +297,44 @@
             const timeStr = date.toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'});
 
             div.innerHTML = `
-                ${msg.text}
+                ${escapeHtml(msg.text)}
                 <div class="message-time">${timeStr}</div>
             `;
             
             container.appendChild(div);
+            
+            // ✅ Auto scroll hamesha bottom pe
             scrollToBottom();
+            
+            // ✅ Vibration for new message
+            if (!isMe && navigator.vibrate) {
+                navigator.vibrate([50, 50]);
+            }
+        });
+
+        // ✅ Escape HTML to prevent XSS
+        function escapeHtml(text) {
+            const div = document.createElement('div');
+            div.textContent = text;
+            return div.innerHTML;
+        }
+
+        // Enter key support
+        document.getElementById('messageInput').addEventListener('keypress', function(e) {
+            if (e.key === 'Enter') sendMessage();
         });
 
         // Logout
         window.logout = function() {
+            myStatus.update({ online: false });
             localStorage.clear();
             window.location.href = 'index.html';
         }
+
+        // ✅ Keep online status updated
+        setInterval(() => {
+            myStatus.update({ online: true });
+        }, 30000);
     </script>
 </body>
 </html>
-            height: 40px;
-            border-radius: 50%;
-            border: none;
-            background: rgba(255,255,255,0.2);
-            color: white;
-            font-size: 20px;
-            cursor: pointer;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            transition: all 0.3s;
-        }
-
-        .icon-btn:hover {
-            background: rgba(255,255,255,0.3);
-            transform: scale(1.1);
-        }
-
-        .icon-btn.danger {
-            background: var(--danger);
-        }
-
-        .icon-btn.danger:hover {
-            background: #c0392b;
-        }
-
-        /* MAIN LAYOUT */
-        .main-container {
-            display: grid;
-            grid-template-columns: 1fr 350px;
-            height: calc(100vh - 75px);
-        }
-
-        /* CHAT SECTION */
-        .chat-section {
-            display: flex;
-            flex-direction: column;
-            background: white;
-            height: 100%;
-        }
-
-        .messages-container {
-            flex: 1;
-            overflow-y: auto;
-            padding: 20px;
-            display: flex;
-            flex-direction: column;
-            gap: 15px;
-            background: linear-gradient(180deg, #f8f9fa 0%, #ffffff 100%);
-            padding-bottom: 80px; /* Space for input area */
-        }
-
-        .message {
-            max-width: 75%;
-            padding: 12px 18px;
-            border-radius: 20px;
-            position: relative;
-            animation: messageSlide 0.3s ease;
-            word-wrap: break-word;
-        }
-
-        @keyframes messageSlide {
-            from { opacity: 0; transform: translateY(20px); }
-            to { opacity: 1; transform: translateY(0); }
-        }
-
-        .message.sent {
-            align-self: flex-end;
-            background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
-            color: white;
-            border-bottom-right-radius: 5px;
-        }
-
-        .message.received {
-            align-self: flex-start;
-            background: white;
-            color: #333;
-            border: 1px solid #e0e0e0;
-            border-bottom-left-radius: 5px;
-            box-shadow: 0 2px 10px rgba(0,0,0,0.05);
-        }
-
-        .message-content {
-            font-size: 15px;
-            line-height: 1.4;
-        }
-
-        .message-footer {
-            display: flex;
-            justify-content: flex-end;
-            align-items: center;
-            gap: 5px;
-            margin-top: 5px;
-            font-size: 10px;
-            opacity: 0.7;
-        }
-
-        /* INPUT AREA */
-        .input-area {
-            padding: 15px;
-            background: white;
-            border-top: 1px solid #e0e0e0;
-            display: flex;
-            gap: 10px;
-            align-items: center;
-            position: fixed;
-            bottom: 0;
-            width: 100%;
-            max-width: 100%;
-            z-index: 90;
-        }
-
-        @media (min-width: 769px) {
-            .input-area {
-                position: relative;
-                width: auto;
-            }
-        }
-
-        .input-wrapper {
-            flex: 1;
-            position: relative;
-        }
-
-        .message-input {
-            width: 100%;
-            padding: 12px 45px 12px 20px;
-            border: 2px solid #e0e0e0;
-            border-radius: 25px;
-            font-size: 15px;
-            outline: none;
-        }
-
-        .input-actions {
-            position: absolute;
-            right: 10px;
-            top: 50%;
-            transform: translateY(-50%);
-        }
-
-        .send-btn {
-            width: 45px;
-            height: 45px;
-            border-radius: 50%;
-            border: none;
-            background: var(--primary);
-            color: white;
-            font-size: 20px;
-            cursor: pointer;
-            box-shadow: 0 4px 10px rgba(102, 126, 234, 0.4);
-        }
-
-        /* SIDEBAR */
-        .sidebar {
-            background: white;
-            border-left: 1px solid #e0e0e0;
-            display: flex;
-            flex-direction: column;
-            overflow-y: auto;
-            padding: 20px;
-        }
-
-        .feature-title {
-            font-size: 14px;
-            font-weight: 600;
-            color: #555;
-            margin-bottom: 15px;
-            text-transform: uppercase;
-        }
-
-        .mood-options {
-            display: grid;
-            grid-template-columns: repeat(3, 1fr);
-            gap: 10px;
-            margin-bottom: 30px;
-        }
-
-        .mood-btn {
-            padding: 10px;
-            border: 1px solid #eee;
-            border-radius: 10px;
-            background: white;
-            font-size: 20px;
-            text-align: center;
-            cursor: pointer;
-        }
-
-        .mood-btn:hover { background: #f0f0ff; }
-        .mood-btn span { display: block; font-size: 10px; margin-top: 5px; }
-
-        .location-btn, .emergency-btn {
-            width: 100%;
-            padding: 12px;
-            border: none;
-            border-radius: 10px;
-            margin-bottom: 20px;
-            font-weight: 600;
-            cursor: pointer;
-        }
-
-        .location-btn {
-            background: #e3f2fd;
-            color: #1976d2;
-        }
-
-        .emergency-btn {
-            background: #ffebee;
-            color: #c62828;
-            animation: pulse-red 2s infinite;
-        }
-
-        @keyframes pulse-red {
-            0% { box-shadow: 0 0 0 0 rgba(198, 40, 40, 0.4); }
-            70% { box-shadow: 0 0 0 10px rgba(198, 40, 40, 0); }
-            100% { box-shadow: 0 0 0 0 rgba(198, 40, 40, 0); }
-        }
-
-        /* MOBILE SIDEBAR */
-        @media (max-width: 768px) {
-            .main-container { grid-template-columns: 1fr; }
-            .sidebar {
-                position: fixed;
-                right: -100%;
-                top: 75px;
-                width: 80%;
-                height: calc(100vh - 75px);
-                transition: 0.3s;
-                z-index: 99;
-                box-shadow: -5px 0 15px rgba(0,0,0,0.1);
-            }
-            .sidebar.show { right: 0; }
-            .menu-toggle { display: block !important; }
-        }
-        .menu-toggle { display: none; }
-    </style>
-</head>
-<body>
-
-    <header class="header">
-        <div class="header-left">
-            <div class="partner-info">
-                <div class="partner-avatar">
-                    <span id="partnerAvatar">👩</span>
-                    <div class="online-indicator" id="onlineIndicator"></div>
-                </div>
-                <div class="partner-details">
-                    <h3 id="partnerName">Amna</h3>
-                    <div class="partner-status">
-                        <span id="lastSeen">Loading...</span>
-                        <span class="typing-indicator" id="typingIndicator">typing...</span>
-                    </div>
-                </div>
-            </div>
-        </div>
-        <div class="header-actions">
-            <button class="icon-btn menu-toggle" onclick="toggleSidebar()">☰</button>
-            <button class="icon-btn" onclick="logout()">🚪</button>
-        </div>
-    </header>
-
-    <div class="main-container">
-        <div class="chat-section">
-            <div class="messages-container" id="messagesContainer">
-                </div>
-            
-            <div class="input-area">
-                <div class="input-wrapper">
-                    <input type="text" class="message-input" id="messageInput" placeholder="Message..." autocomplete="off">
-                    <div class="input-actions">
-                        <button class="icon-btn" style="color:red" onclick="sendHeart()">❤️</button>
-                    </div>
-                </div>
-                <button class="send-btn" onclick="sendMessage()">➤</button>
-            </div>
-        </div>
-
-        <aside class="sidebar" id="sidebar">
-            <div class="feature-title">😊 Mood Meter</div>
-            <div class="mood-options">
-                <button class="mood-btn" onclick="sendMood('Happy 😊')">😊<span>Happy</span></button>
-                <button class="mood-btn" onclick="sendMood('Sad 😔')">😔<span>Sad</span></button>
-                <button class="mood-btn" onclick="sendMood('Romantic 🥰')">🥰<span>Love</span></button>
-                <button class="mood-btn" onclick="sendMood('Angry 😡')">😡<span>Angry</span></button>
-                <button class="mood-btn" onclick="sendMood('Tired 😴')">😴<span>Tired</span></button>
-                <button class="mood-btn" onclick="sendMood('Miss You 🥺')">🥺<span>Miss U</span></button>
-            </div>
-
-            <div class="feature-title">📍 Quick Actions</div>
-            <button class="location-btn" onclick="sendLocation()">📍 Share Location</button>
-            <button class="emergency-btn" onclick="sendEmergency()">🚨 EMERGENCY ALERT</button>
-        </aside>
-    </div>
-
-    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-database-compat.js"></script>
-
-    <script>
-        // 🔥 TERA ASLI FIREBASE CONFIG
-        const firebaseConfig = {
-          apiKey: "AIzaSyD9izkgUqK9kmxiUd2lsdpgs5Krpkve68E",
-          authDomain: "mychattapp-a5fcc.firebaseapp.com",
-          databaseURL: "https://mychattapp-a5fcc-default-rtdb.firebaseio.com",
-          projectId: "mychattapp-a5fcc",
-          storageBucket: "mychattapp-a5fcc.firebasestorage.app",
-          messagingSenderId: "265732110927",
-          appId: "1:265732110927:web:de60478c1303bca701083a"
-        };
-
-        // Initialize
-        firebase.initializeApp(firebaseConfig);
-        const db = firebase.database();
-
-        // User Setup
-        const currentUser = localStorage.getItem('currentUser');
-        if (!currentUser) window.location.href = 'index.html';
-
-        const partner = currentUser === 'ahad' ? 'amna' : 'ahad';
-        const partnerNameStr = currentUser === 'ahad' ? 'Amna' : 'Ahad';
-        const partnerAvatarStr = currentUser === 'ahad' ? '👩' : '👨';
-
-        // Update UI
-        document.getElementById('partnerName').innerText = partnerNameStr;
-        document.getElementById('partnerAvatar').innerText = partnerAvatarStr;
-
-        // Online Status System
-        const myStatusRef = db.ref('users/' + currentUser);
-        const partnerStatusRef = db.ref('users/' + partner);
-
-        // Jab disconnect ho jaye toh offline show kare
-        myStatusRef.onDisconnect().update({ online: false, lastSeen: firebase.database.ServerValue.TIMESTAMP });
-        // Abhi online kar do
-        myStatusRef.update({ online: true, lastSeen: firebase.database.ServerValue.TIMESTAMP });
-
-        // Listen for Partner Status
-        partnerStatusRef.on('value', (snapshot) => {
-            const data = snapshot.val();
-            const indicator = document.getElementById('onlineIndicator');
-            const lastSeenText = document.getElementById('lastSeen');
-            const typingInd = document.getElementById('typingIndicator');
-
-            if (data) {
-                if (data.online) {
-                    indicator.classList.remove('offline');
-                    lastSeenText.innerText = "Online";
-                    lastSeenText.style.color = "#2ecc71";
-                    lastSeenText.style.fontWeight = "bold";
-                } else {
-                    indicator.classList.add('offline');
-                    const date = new Date(data.lastSeen);
-                    lastSeenText.innerText = "Last seen: " + date.toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'});
-                    lastSeenText.style.color = "#666";
-                }
-
-                if (data.typing) {
-                    typingInd.style.display = "flex";
-                    lastSeenText.style.display = "none";
-                } else {
-                    typingInd.style.display = "none";
-                    lastSeenText.style.display = "block";
-                }
-            }
-        });
-
-        // Chat System
-        const messagesRef = db.ref('messages');
-        const messagesContainer = document.getElementById('messagesContainer');
-
-        function sendMessage() {
-            const input = document.getElementById('messageInput');
-            const text = input.value.trim();
-            if (text === "") return;
-
-            messagesRef.push({
-                sender: currentUser,
-                text: text,
-                timestamp: firebase.database.ServerValue.TIMESTAMP,
-                type: 'text'
-            });
-
-            input.value = "";
-        }
-
-        // Receive Messages
-        messagesRef.on('child_added', (snapshot) => {
-            const msg = snapshot.val();
-            const div = document.createElement('div');
-            const isMe = msg.sender === currentUser;
-            
-            div.className = `message ${isMe ? 'sent' : 'received'}`;
-            
-            let content = msg.text;
-            if(msg.type === 'location') {
-                content = `<a href="${msg.text}" target="_blank" style="color:white;text-decoration:underline">📍 View Location on Map</a>`;
-            }
-
-            const time = new Date(msg.timestamp).toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'});
-
-            div.innerHTML = `
-                <div class="message-content">${content}</div>
-                <div class="message-footer">${time}</div>
-            `;
-
-            messagesContainer.appendChild(div);
-            messagesContainer.scrollTop = messagesContainer.scrollHeight;
-
-            if (!isMe && navigator.vibrate) navigator.vibrate(50);
-        });
-
-        // Special Features
-        function sendHeart() {
-            messagesRef.push({
-                sender: currentUser,
-                text: "❤️",
-                timestamp: firebase.database.ServerValue.TIMESTAMP,
-                type: 'text'
-            });
-        }
-
-        function sendMood(mood) {
-            messagesRef.push({
-                sender: currentUser,
-                text: `Current Mood: ${mood}`,
-                timestamp: firebase.database.ServerValue.TIMESTAMP,
-                type: 'text'
-            });
-            toggleSidebar(); // Close sidebar after click
-        }
-
-        function sendEmergency() {
-            if(confirm("Are you sure? Partner will be alerted!")) {
-                messagesRef.push({
-                    sender: currentUser,
-                    text: "🚨 EMERGENCY! I NEED YOU! 🚨",
-                    timestamp: firebase.database.ServerValue.TIMESTAMP,
-                    type: 'text'
-                });
-                navigator.vibrate([200, 100, 200]);
-            }
-        }
-
-        function sendLocation() {
-            if (navigator.geolocation) {
-                navigator.geolocation.getCurrentPosition((position) => {
-                    const link = `https://www.google.com/maps?q=${position.coords.latitude},${position.coords.longitude}`;
-                    messagesRef.push({
-                        sender: currentUser,
-                        text: link,
-                        timestamp: firebase.database.ServerValue.TIMESTAMP,
-                        type: 'location'
-                    });
-                });
-                toggleSidebar();
-            } else {
-                alert("Location not supported.");
-            }
-        }
-
-        // Typing Indicator
-        const inputField = document.getElementById('messageInput');
-        inputField.addEventListener('input', () => {
-            myStatusRef.update({ typing: true });
-            setTimeout(() => myStatusRef.update({ typing: false }), 2000);
-        });
-
-        // Sidebar Toggle
-        function toggleSidebar() {
-            document.getElementById('sidebar').classList.toggle('show');
-        }
-
-        function logout() {
-            myStatusRef.update({ online: false });
-            localStorage.removeItem('currentUser');
-            window.location.href = 'index.html';
-        }
-    </script>
-</body>
-</html>
-
