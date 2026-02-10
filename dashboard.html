@@ -1,0 +1,622 @@
+<!DOCTYPE html>
+<html lang="ur">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="theme-color" content="#667eea">
+    <title>❤️ Ahad & Amna - Dashboard</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap');
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            -webkit-tap-highlight-color: transparent;
+        }
+
+        :root {
+            --primary: #667eea;
+            --secondary: #764ba2;
+            --ahad: #4a90e2;
+            --amna: #e91e63;
+            --success: #2ecc71;
+            --danger: #e74c3c;
+            --warning: #f39c12;
+        }
+
+        body {
+            font-family: 'Poppins', sans-serif;
+            background: #f0f2f5;
+            height: 100vh;
+            overflow: hidden;
+        }
+
+        /* HEADER */
+        .header {
+            background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
+            color: white;
+            padding: 15px 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.1);
+            position: relative;
+            z-index: 100;
+        }
+
+        .header-left {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .partner-info {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .partner-avatar {
+            width: 45px;
+            height: 45px;
+            border-radius: 50%;
+            background: white;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 24px;
+            position: relative;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.2);
+        }
+
+        .online-indicator {
+            position: absolute;
+            bottom: 2px;
+            right: 2px;
+            width: 12px;
+            height: 12px;
+            background: var(--success);
+            border-radius: 50%;
+            border: 2px solid white;
+            animation: pulse 2s infinite;
+        }
+
+        @keyframes pulse {
+            0%, 100% { transform: scale(1); opacity: 1; }
+            50% { transform: scale(1.2); opacity: 0.8; }
+        }
+
+        .online-indicator.offline {
+            background: #95a5a6;
+            animation: none;
+        }
+
+        .partner-details h3 {
+            font-size: 16px;
+            font-weight: 600;
+            margin-bottom: 2px;
+        }
+
+        .partner-status {
+            font-size: 12px;
+            opacity: 0.9;
+            display: flex;
+            align-items: center;
+            gap: 5px;
+        }
+
+        .typing-indicator {
+            display: none;
+            color: #ffd700;
+            font-weight: 500;
+        }
+
+        .typing-indicator.show {
+            display: flex;
+            align-items: center;
+            gap: 3px;
+        }
+
+        .typing-dots {
+            display: flex;
+            gap: 3px;
+        }
+
+        .typing-dots span {
+            animation: typingBounce 1.4s infinite;
+            font-size: 16px;
+        }
+
+        .typing-dots span:nth-child(2) { animation-delay: 0.2s; }
+        .typing-dots span:nth-child(3) { animation-delay: 0.4s; }
+
+        @keyframes typingBounce {
+            0%, 60%, 100% { transform: translateY(0); }
+            30% { transform: translateY(-5px); }
+        }
+
+        .header-actions {
+            display: flex;
+            gap: 10px;
+        }
+
+        .icon-btn {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            border: none;
+            background: rgba(255,255,255,0.2);
+            color: white;
+            font-size: 20px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.3s;
+        }
+
+        .icon-btn:hover {
+            background: rgba(255,255,255,0.3);
+            transform: scale(1.1);
+        }
+
+        .icon-btn.danger {
+            background: var(--danger);
+        }
+
+        .icon-btn.danger:hover {
+            background: #c0392b;
+        }
+
+        /* MAIN LAYOUT */
+        .main-container {
+            display: grid;
+            grid-template-columns: 1fr 350px;
+            height: calc(100vh - 75px);
+        }
+
+        /* CHAT SECTION */
+        .chat-section {
+            display: flex;
+            flex-direction: column;
+            background: white;
+            height: 100%;
+        }
+
+        .messages-container {
+            flex: 1;
+            overflow-y: auto;
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+            background: linear-gradient(180deg, #f8f9fa 0%, #ffffff 100%);
+            padding-bottom: 80px; /* Space for input area */
+        }
+
+        .message {
+            max-width: 75%;
+            padding: 12px 18px;
+            border-radius: 20px;
+            position: relative;
+            animation: messageSlide 0.3s ease;
+            word-wrap: break-word;
+        }
+
+        @keyframes messageSlide {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .message.sent {
+            align-self: flex-end;
+            background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
+            color: white;
+            border-bottom-right-radius: 5px;
+        }
+
+        .message.received {
+            align-self: flex-start;
+            background: white;
+            color: #333;
+            border: 1px solid #e0e0e0;
+            border-bottom-left-radius: 5px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+        }
+
+        .message-content {
+            font-size: 15px;
+            line-height: 1.4;
+        }
+
+        .message-footer {
+            display: flex;
+            justify-content: flex-end;
+            align-items: center;
+            gap: 5px;
+            margin-top: 5px;
+            font-size: 10px;
+            opacity: 0.7;
+        }
+
+        /* INPUT AREA */
+        .input-area {
+            padding: 15px;
+            background: white;
+            border-top: 1px solid #e0e0e0;
+            display: flex;
+            gap: 10px;
+            align-items: center;
+            position: fixed;
+            bottom: 0;
+            width: 100%;
+            max-width: 100%;
+            z-index: 90;
+        }
+
+        @media (min-width: 769px) {
+            .input-area {
+                position: relative;
+                width: auto;
+            }
+        }
+
+        .input-wrapper {
+            flex: 1;
+            position: relative;
+        }
+
+        .message-input {
+            width: 100%;
+            padding: 12px 45px 12px 20px;
+            border: 2px solid #e0e0e0;
+            border-radius: 25px;
+            font-size: 15px;
+            outline: none;
+        }
+
+        .input-actions {
+            position: absolute;
+            right: 10px;
+            top: 50%;
+            transform: translateY(-50%);
+        }
+
+        .send-btn {
+            width: 45px;
+            height: 45px;
+            border-radius: 50%;
+            border: none;
+            background: var(--primary);
+            color: white;
+            font-size: 20px;
+            cursor: pointer;
+            box-shadow: 0 4px 10px rgba(102, 126, 234, 0.4);
+        }
+
+        /* SIDEBAR */
+        .sidebar {
+            background: white;
+            border-left: 1px solid #e0e0e0;
+            display: flex;
+            flex-direction: column;
+            overflow-y: auto;
+            padding: 20px;
+        }
+
+        .feature-title {
+            font-size: 14px;
+            font-weight: 600;
+            color: #555;
+            margin-bottom: 15px;
+            text-transform: uppercase;
+        }
+
+        .mood-options {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 10px;
+            margin-bottom: 30px;
+        }
+
+        .mood-btn {
+            padding: 10px;
+            border: 1px solid #eee;
+            border-radius: 10px;
+            background: white;
+            font-size: 20px;
+            text-align: center;
+            cursor: pointer;
+        }
+
+        .mood-btn:hover { background: #f0f0ff; }
+        .mood-btn span { display: block; font-size: 10px; margin-top: 5px; }
+
+        .location-btn, .emergency-btn {
+            width: 100%;
+            padding: 12px;
+            border: none;
+            border-radius: 10px;
+            margin-bottom: 20px;
+            font-weight: 600;
+            cursor: pointer;
+        }
+
+        .location-btn {
+            background: #e3f2fd;
+            color: #1976d2;
+        }
+
+        .emergency-btn {
+            background: #ffebee;
+            color: #c62828;
+            animation: pulse-red 2s infinite;
+        }
+
+        @keyframes pulse-red {
+            0% { box-shadow: 0 0 0 0 rgba(198, 40, 40, 0.4); }
+            70% { box-shadow: 0 0 0 10px rgba(198, 40, 40, 0); }
+            100% { box-shadow: 0 0 0 0 rgba(198, 40, 40, 0); }
+        }
+
+        /* MOBILE SIDEBAR */
+        @media (max-width: 768px) {
+            .main-container { grid-template-columns: 1fr; }
+            .sidebar {
+                position: fixed;
+                right: -100%;
+                top: 75px;
+                width: 80%;
+                height: calc(100vh - 75px);
+                transition: 0.3s;
+                z-index: 99;
+                box-shadow: -5px 0 15px rgba(0,0,0,0.1);
+            }
+            .sidebar.show { right: 0; }
+            .menu-toggle { display: block !important; }
+        }
+        .menu-toggle { display: none; }
+    </style>
+</head>
+<body>
+
+    <header class="header">
+        <div class="header-left">
+            <div class="partner-info">
+                <div class="partner-avatar">
+                    <span id="partnerAvatar">👩</span>
+                    <div class="online-indicator" id="onlineIndicator"></div>
+                </div>
+                <div class="partner-details">
+                    <h3 id="partnerName">Amna</h3>
+                    <div class="partner-status">
+                        <span id="lastSeen">Loading...</span>
+                        <span class="typing-indicator" id="typingIndicator">typing...</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="header-actions">
+            <button class="icon-btn menu-toggle" onclick="toggleSidebar()">☰</button>
+            <button class="icon-btn" onclick="logout()">🚪</button>
+        </div>
+    </header>
+
+    <div class="main-container">
+        <div class="chat-section">
+            <div class="messages-container" id="messagesContainer">
+                </div>
+            
+            <div class="input-area">
+                <div class="input-wrapper">
+                    <input type="text" class="message-input" id="messageInput" placeholder="Message..." autocomplete="off">
+                    <div class="input-actions">
+                        <button class="icon-btn" style="color:red" onclick="sendHeart()">❤️</button>
+                    </div>
+                </div>
+                <button class="send-btn" onclick="sendMessage()">➤</button>
+            </div>
+        </div>
+
+        <aside class="sidebar" id="sidebar">
+            <div class="feature-title">😊 Mood Meter</div>
+            <div class="mood-options">
+                <button class="mood-btn" onclick="sendMood('Happy 😊')">😊<span>Happy</span></button>
+                <button class="mood-btn" onclick="sendMood('Sad 😔')">😔<span>Sad</span></button>
+                <button class="mood-btn" onclick="sendMood('Romantic 🥰')">🥰<span>Love</span></button>
+                <button class="mood-btn" onclick="sendMood('Angry 😡')">😡<span>Angry</span></button>
+                <button class="mood-btn" onclick="sendMood('Tired 😴')">😴<span>Tired</span></button>
+                <button class="mood-btn" onclick="sendMood('Miss You 🥺')">🥺<span>Miss U</span></button>
+            </div>
+
+            <div class="feature-title">📍 Quick Actions</div>
+            <button class="location-btn" onclick="sendLocation()">📍 Share Location</button>
+            <button class="emergency-btn" onclick="sendEmergency()">🚨 EMERGENCY ALERT</button>
+        </aside>
+    </div>
+
+    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-database-compat.js"></script>
+
+    <script>
+        // 🔥 TERA ASLI FIREBASE CONFIG
+        const firebaseConfig = {
+          apiKey: "AIzaSyD9izkgUqK9kmxiUd2lsdpgs5Krpkve68E",
+          authDomain: "mychattapp-a5fcc.firebaseapp.com",
+          databaseURL: "https://mychattapp-a5fcc-default-rtdb.firebaseio.com",
+          projectId: "mychattapp-a5fcc",
+          storageBucket: "mychattapp-a5fcc.firebasestorage.app",
+          messagingSenderId: "265732110927",
+          appId: "1:265732110927:web:de60478c1303bca701083a"
+        };
+
+        // Initialize
+        firebase.initializeApp(firebaseConfig);
+        const db = firebase.database();
+
+        // User Setup
+        const currentUser = localStorage.getItem('currentUser');
+        if (!currentUser) window.location.href = 'index.html';
+
+        const partner = currentUser === 'ahad' ? 'amna' : 'ahad';
+        const partnerNameStr = currentUser === 'ahad' ? 'Amna' : 'Ahad';
+        const partnerAvatarStr = currentUser === 'ahad' ? '👩' : '👨';
+
+        // Update UI
+        document.getElementById('partnerName').innerText = partnerNameStr;
+        document.getElementById('partnerAvatar').innerText = partnerAvatarStr;
+
+        // Online Status System
+        const myStatusRef = db.ref('users/' + currentUser);
+        const partnerStatusRef = db.ref('users/' + partner);
+
+        // Jab disconnect ho jaye toh offline show kare
+        myStatusRef.onDisconnect().update({ online: false, lastSeen: firebase.database.ServerValue.TIMESTAMP });
+        // Abhi online kar do
+        myStatusRef.update({ online: true, lastSeen: firebase.database.ServerValue.TIMESTAMP });
+
+        // Listen for Partner Status
+        partnerStatusRef.on('value', (snapshot) => {
+            const data = snapshot.val();
+            const indicator = document.getElementById('onlineIndicator');
+            const lastSeenText = document.getElementById('lastSeen');
+            const typingInd = document.getElementById('typingIndicator');
+
+            if (data) {
+                if (data.online) {
+                    indicator.classList.remove('offline');
+                    lastSeenText.innerText = "Online";
+                    lastSeenText.style.color = "#2ecc71";
+                    lastSeenText.style.fontWeight = "bold";
+                } else {
+                    indicator.classList.add('offline');
+                    const date = new Date(data.lastSeen);
+                    lastSeenText.innerText = "Last seen: " + date.toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'});
+                    lastSeenText.style.color = "#666";
+                }
+
+                if (data.typing) {
+                    typingInd.style.display = "flex";
+                    lastSeenText.style.display = "none";
+                } else {
+                    typingInd.style.display = "none";
+                    lastSeenText.style.display = "block";
+                }
+            }
+        });
+
+        // Chat System
+        const messagesRef = db.ref('messages');
+        const messagesContainer = document.getElementById('messagesContainer');
+
+        function sendMessage() {
+            const input = document.getElementById('messageInput');
+            const text = input.value.trim();
+            if (text === "") return;
+
+            messagesRef.push({
+                sender: currentUser,
+                text: text,
+                timestamp: firebase.database.ServerValue.TIMESTAMP,
+                type: 'text'
+            });
+
+            input.value = "";
+        }
+
+        // Receive Messages
+        messagesRef.on('child_added', (snapshot) => {
+            const msg = snapshot.val();
+            const div = document.createElement('div');
+            const isMe = msg.sender === currentUser;
+            
+            div.className = `message ${isMe ? 'sent' : 'received'}`;
+            
+            let content = msg.text;
+            if(msg.type === 'location') {
+                content = `<a href="${msg.text}" target="_blank" style="color:white;text-decoration:underline">📍 View Location on Map</a>`;
+            }
+
+            const time = new Date(msg.timestamp).toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'});
+
+            div.innerHTML = `
+                <div class="message-content">${content}</div>
+                <div class="message-footer">${time}</div>
+            `;
+
+            messagesContainer.appendChild(div);
+            messagesContainer.scrollTop = messagesContainer.scrollHeight;
+
+            if (!isMe && navigator.vibrate) navigator.vibrate(50);
+        });
+
+        // Special Features
+        function sendHeart() {
+            messagesRef.push({
+                sender: currentUser,
+                text: "❤️",
+                timestamp: firebase.database.ServerValue.TIMESTAMP,
+                type: 'text'
+            });
+        }
+
+        function sendMood(mood) {
+            messagesRef.push({
+                sender: currentUser,
+                text: `Current Mood: ${mood}`,
+                timestamp: firebase.database.ServerValue.TIMESTAMP,
+                type: 'text'
+            });
+            toggleSidebar(); // Close sidebar after click
+        }
+
+        function sendEmergency() {
+            if(confirm("Are you sure? Partner will be alerted!")) {
+                messagesRef.push({
+                    sender: currentUser,
+                    text: "🚨 EMERGENCY! I NEED YOU! 🚨",
+                    timestamp: firebase.database.ServerValue.TIMESTAMP,
+                    type: 'text'
+                });
+                navigator.vibrate([200, 100, 200]);
+            }
+        }
+
+        function sendLocation() {
+            if (navigator.geolocation) {
+                navigator.geolocation.getCurrentPosition((position) => {
+                    const link = `https://www.google.com/maps?q=${position.coords.latitude},${position.coords.longitude}`;
+                    messagesRef.push({
+                        sender: currentUser,
+                        text: link,
+                        timestamp: firebase.database.ServerValue.TIMESTAMP,
+                        type: 'location'
+                    });
+                });
+                toggleSidebar();
+            } else {
+                alert("Location not supported.");
+            }
+        }
+
+        // Typing Indicator
+        const inputField = document.getElementById('messageInput');
+        inputField.addEventListener('input', () => {
+            myStatusRef.update({ typing: true });
+            setTimeout(() => myStatusRef.update({ typing: false }), 2000);
+        });
+
+        // Sidebar Toggle
+        function toggleSidebar() {
+            document.getElementById('sidebar').classList.toggle('show');
+        }
+
+        function logout() {
+            myStatusRef.update({ online: false });
+            localStorage.removeItem('currentUser');
+            window.location.href = 'index.html';
+        }
+    </script>
+</body>
+</html>
