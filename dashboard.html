@@ -4,9 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <meta name="theme-color" content="#667eea">
-    <meta name="apple-mobile-web-app-capable" content="yes">
-    <link rel="manifest" href="manifest.json">
-    <title>❤️ Ahad & Amna - Dashboard</title>
+    <title>⚡ Features - Ahad & Amna</title>
 
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap');
@@ -22,16 +20,11 @@
             --info: #3498db;
         }
 
-        html, body {
+        body {
             font-family: 'Poppins', sans-serif;
             background: #f0f2f5;
-            height: 100%;
-            height: 100dvh; 
-            overflow: hidden;
-            position: fixed;
-            width: 100%;
-            top: 0;
-            left: 0;
+            min-height: 100vh;
+            padding-bottom: 80px;
         }
 
         /* HEADER */
@@ -51,21 +44,8 @@
             z-index: 100;
         }
 
-        .header-left { display: flex; align-items: center; gap: 10px; }
-        .partner-avatar { width: 40px; height: 40px; border-radius: 50%; background: white; display: flex; align-items: center; justify-content: center; font-size: 20px; position: relative; }
-        .online-indicator { position: absolute; bottom: 0; right: 0; width: 10px; height: 10px; background: var(--success); border-radius: 50%; border: 2px solid white; }
-        .online-indicator.offline { background: #95a5a6; }
-        .partner-details h3 { font-size: 15px; font-weight: 600; margin: 0; }
-        .partner-status { font-size: 11px; opacity: 0.9; display: flex; align-items: center; gap: 5px; }
-        .typing-indicator { display: none; color: #ffd700; font-weight: 500; }
-        .typing-indicator.show { display: flex; align-items: center; gap: 3px; }
-        .typing-dots span { animation: bounce 1.4s infinite; }
-        .typing-dots span:nth-child(2) { animation-delay: 0.2s; }
-        .typing-dots span:nth-child(3) { animation-delay: 0.4s; }
-        @keyframes bounce { 0%, 60%, 100% { transform: translateY(0); } 30% { transform: translateY(-5px); } }
-
-        .header-actions { display: flex; gap: 8px; }
-        .icon-btn { 
+        .header-title { font-size: 18px; font-weight: 700; }
+        .back-btn { 
             width: 40px; 
             height: 40px; 
             border-radius: 50%; 
@@ -77,266 +57,356 @@
             display: flex; 
             align-items: center; 
             justify-content: center; 
-            transition: all 0.2s;
-            text-decoration: none;
         }
-        .icon-btn:hover { background: rgba(255,255,255,0.3); transform: scale(1.1); }
 
         /* MAIN CONTENT */
-        .main-content {
-            position: fixed;
-            top: 60px;
-            left: 0;
-            right: 0;
-            bottom: 0;
-            display: flex;
+        .container {
+            margin-top: 80px;
+            padding: 0 15px;
+            max-width: 600px;
+            margin-left: auto;
+            margin-right: auto;
         }
 
-        /* CHAT AREA */
-        .chat-area {
-            flex: 1;
-            display: flex;
-            flex-direction: column;
-            height: 100%;
-            background: white;
-        }
-
-        /* MESSAGES */
-        .messages-container {
-            flex: 1;
-            overflow-y: auto;
-            overflow-x: hidden;
-            padding: 15px;
-            padding-bottom: 80px;
-            display: flex;
-            flex-direction: column;
-            gap: 10px;
-            background: linear-gradient(135deg, #f5f7fa 0%, #e4e8ec 100%);
-            scroll-behavior: smooth;
-            -webkit-overflow-scrolling: touch;
-        }
-
-        .message { 
-            max-width: 80%; 
-            padding: 10px 15px; 
+        .feature-card { 
+            background: white; 
+            padding: 20px; 
             border-radius: 15px; 
-            font-size: 14px; 
-            word-wrap: break-word; 
-            word-break: break-word;
-            animation: slideIn 0.2s ease; 
-            position: relative;
+            margin-bottom: 20px; 
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
         }
-        @keyframes slideIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
 
-        .message.sent { align-self: flex-end; background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%); color: white; border-bottom-right-radius: 2px; }
-        .message.received { align-self: flex-start; background: white; color: #333; border: 1px solid #ddd; border-bottom-left-radius: 2px; }
-        .message-time { font-size: 9px; opacity: 0.7; text-align: right; margin-top: 2px; }
-        .message img { max-width: 200px; border-radius: 10px; display: block; margin: 5px 0; }
-        .message audio { width: 200px; margin: 5px 0; }
-
-        /* INPUT */
-        .input-area {
-            position: fixed;
-            bottom: 0;
-            left: 0;
-            right: 0;
-            padding: 10px;
-            background: white;
-            border-top: 1px solid #eee;
+        .feature-title { 
+            font-size: 14px; 
+            font-weight: 700; 
+            color: var(--primary); 
+            margin-bottom: 15px; 
+            text-transform: uppercase;
+            letter-spacing: 1px;
             display: flex;
             align-items: center;
             gap: 8px;
-            z-index: 10;
         }
 
-        .input-wrapper { flex: 1; position: relative; }
-        .message-input { width: 100%; padding: 12px 80px 12px 15px; border: 1px solid #ddd; border-radius: 25px; outline: none; font-size: 15px; background: #f9f9f9; transition: all 0.2s; }
-        .message-input:focus { border-color: var(--primary); background: white; box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1); }
+        /* THEME */
+        .theme-colors { 
+            display: flex; 
+            gap: 15px; 
+            flex-wrap: wrap; 
+            justify-content: center;
+        }
+        .theme-color { 
+            width: 50px; 
+            height: 50px; 
+            border-radius: 50%; 
+            cursor: pointer; 
+            border: 4px solid transparent; 
+            transition: all 0.3s;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.2);
+        }
+        .theme-color:hover { transform: scale(1.1); }
+        .theme-color.active { 
+            border-color: #333; 
+            box-shadow: 0 0 0 3px white, 0 0 0 5px #333, 0 4px 12px rgba(0,0,0,0.3); 
+        }
 
-        .input-actions { position: absolute; right: 8px; top: 50%; transform: translateY(-50%); display: flex; gap: 5px; }
-        .input-btn { background: none; border: none; font-size: 20px; cursor: pointer; padding: 5px; transition: transform 0.2s; }
-        .input-btn:hover { transform: scale(1.2); }
-        .send-btn { width: 45px; height: 45px; border-radius: 50%; background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%); color: white; border: none; font-size: 20px; display: flex; align-items: center; justify-content: center; box-shadow: 0 2px 5px rgba(0,0,0,0.2); cursor: pointer; flex-shrink: 0; transition: all 0.2s; }
-        .send-btn:hover { transform: scale(1.1); box-shadow: 0 4px 10px rgba(0,0,0,0.3); }
-        .send-btn:active { transform: scale(0.95); }
+        /* MOOD GRID */
+        .mood-grid { 
+            display: grid; 
+            grid-template-columns: repeat(3, 1fr); 
+            gap: 12px; 
+        }
+        .mood-btn { 
+            padding: 20px; 
+            border: 2px solid #e0e0e0; 
+            border-radius: 12px; 
+            background: white; 
+            cursor: pointer; 
+            font-size: 32px; 
+            transition: all 0.3s;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 5px;
+        }
+        .mood-btn:hover { 
+            border-color: var(--primary); 
+            background: linear-gradient(135deg, #f0f0ff 0%, #fff0f5 100%);
+            transform: translateY(-3px);
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+        }
+        .mood-label {
+            font-size: 11px;
+            color: #666;
+            font-weight: 600;
+        }
 
-        /* MODALS */
-        .modal { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: black; z-index: 1000; flex-direction: column; }
-        .modal.show { display: flex; }
-        .modal-header { padding: 15px; display: flex; justify-content: space-between; align-items: center; background: rgba(0,0,0,0.8); color: white; }
-        .modal-content { flex: 1; display: flex; align-items: center; justify-content: center; }
-        .modal-controls { padding: 20px; display: flex; justify-content: center; gap: 30px; background: rgba(0,0,0,0.8); }
-        .modal-btn { width: 60px; height: 60px; border-radius: 50%; border: 3px solid white; background: transparent; color: white; font-size: 24px; cursor: pointer; transition: all 0.2s; }
-        .modal-btn:hover { transform: scale(1.1); }
-        .modal-btn.primary { background: white; color: black; }
+        /* ACTION BUTTONS */
+        .action-btn { 
+            width: 100%; 
+            padding: 16px; 
+            margin-bottom: 12px; 
+            border: none; 
+            border-radius: 12px; 
+            background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%); 
+            color: white; 
+            font-size: 15px; 
+            font-weight: 600; 
+            cursor: pointer; 
+            transition: all 0.3s; 
+            display: flex; 
+            align-items: center; 
+            justify-content: center; 
+            gap: 10px;
+            box-shadow: 0 4px 10px rgba(102, 126, 234, 0.3);
+        }
+        .action-btn:hover { 
+            transform: translateY(-2px); 
+            box-shadow: 0 6px 20px rgba(0,0,0,0.2); 
+        }
+        .action-btn:active { transform: scale(0.98); }
+
+        .action-btn.danger { 
+            background: linear-gradient(135deg, #e74c3c 0%, #c0392b 100%); 
+            box-shadow: 0 4px 10px rgba(231, 76, 60, 0.3);
+        }
+        .action-btn.success { 
+            background: linear-gradient(135deg, #2ecc71 0%, #27ae60 100%); 
+            box-shadow: 0 4px 10px rgba(46, 204, 113, 0.3);
+        }
+        .action-btn.warning { 
+            background: linear-gradient(135deg, #f39c12 0%, #e67e22 100%); 
+            box-shadow: 0 4px 10px rgba(243, 156, 18, 0.3);
+        }
+        .action-btn.info { 
+            background: linear-gradient(135deg, #3498db 0%, #2980b9 100%); 
+            box-shadow: 0 4px 10px rgba(52, 152, 219, 0.3);
+        }
+
+        /* STATS */
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 15px;
+            text-align: center;
+        }
+        .stat-item {
+            background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+            padding: 15px;
+            border-radius: 12px;
+        }
+        .stat-value {
+            font-size: 24px;
+            font-weight: 700;
+            color: var(--primary);
+        }
+        .stat-label {
+            font-size: 11px;
+            color: #666;
+            margin-top: 5px;
+        }
+
+        /* QUICK SEND GRID */
+        .quick-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 10px;
+        }
+        .quick-btn {
+            padding: 15px;
+            border: 2px solid #e0e0e0;
+            border-radius: 10px;
+            background: white;
+            cursor: pointer;
+            font-size: 14px;
+            font-weight: 600;
+            transition: all 0.2s;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+        }
+        .quick-btn:hover {
+            border-color: var(--primary);
+            background: #f8f9ff;
+            transform: translateY(-2px);
+        }
 
         /* NOTIFICATION */
-        .notification { position: fixed; top: 70px; right: 15px; background: white; padding: 15px; border-radius: 12px; box-shadow: 0 5px 20px rgba(0,0,0,0.2); display: none; z-index: 1000; max-width: 250px; animation: slideInRight 0.3s ease; }
-        @keyframes slideInRight { from { transform: translateX(300px); opacity: 0; } to { transform: translateX(0); opacity: 1; } }
+        .notification { 
+            position: fixed; 
+            top: 70px; 
+            right: 15px; 
+            background: white; 
+            padding: 15px 20px; 
+            border-radius: 12px; 
+            box-shadow: 0 5px 20px rgba(0,0,0,0.2); 
+            display: none; 
+            z-index: 1000; 
+            max-width: 300px;
+            border-left: 4px solid var(--primary);
+            animation: slideIn 0.3s ease;
+        }
+        @keyframes slideIn { 
+            from { transform: translateX(400px); opacity: 0; } 
+            to { transform: translateX(0); opacity: 1; } 
+        }
         .notification.show { display: block; }
-
-        /* RECORDING */
-        .recording-indicator { display: none; position: fixed; top: 70px; left: 50%; transform: translateX(-50%); background: var(--danger); color: white; padding: 10px 20px; border-radius: 20px; font-size: 14px; z-index: 1000; animation: pulse 1s infinite; }
-        .recording-indicator.show { display: block; }
-        @keyframes pulse { 0%, 100% { opacity: 1; } 50% { opacity: 0.7; } }
-
-        /* TYPING BUBBLE */
-        .typing-bubble { display: none; align-self: flex-start; background: white; padding: 12px 15px; border-radius: 15px; border: 1px solid #ddd; border-bottom-left-radius: 2px; }
-        .typing-bubble.show { display: flex; gap: 4px; }
-        .typing-bubble span { width: 8px; height: 8px; background: #999; border-radius: 50%; animation: typingBounce 1.4s infinite; }
-        .typing-bubble span:nth-child(2) { animation-delay: 0.2s; }
-        .typing-bubble span:nth-child(3) { animation-delay: 0.4s; }
-        @keyframes typingBounce { 0%, 60%, 100% { transform: translateY(0); } 30% { transform: translateY(-10px); } }
-
-        /* SEARCH BAR */
-        .search-bar { display: none; position: fixed; top: 60px; left: 0; right: 0; background: white; padding: 10px 15px; border-bottom: 1px solid #eee; z-index: 90; }
-        .search-bar.show { display: flex; gap: 10px; }
-        .search-input { flex: 1; padding: 10px 15px; border: 1px solid #ddd; border-radius: 20px; outline: none; font-size: 14px; }
-        .search-btn { padding: 10px 20px; border: none; background: var(--primary); color: white; border-radius: 20px; cursor: pointer; font-weight: 600; }
-
-        /* EMOJI PICKER */
-        .emoji-picker { display: none; position: fixed; bottom: 75px; left: 10px; right: 10px; background: white; border-radius: 15px; box-shadow: 0 -5px 20px rgba(0,0,0,0.1); padding: 15px; z-index: 85; max-height: 250px; overflow-y: auto; }
-        .emoji-picker.show { display: block; }
-        .emoji-grid { display: grid; grid-template-columns: repeat(8, 1fr); gap: 8px; }
-        .emoji-item { font-size: 24px; cursor: pointer; text-align: center; padding: 8px; border-radius: 8px; transition: all 0.2s; }
-        .emoji-item:hover { background: #f0f0f0; transform: scale(1.2); }
-
-        /* HEART ANIMATION */
-        @keyframes heartFloat { 0% { transform: scale(0) rotate(0deg); opacity: 1; } 50% { transform: scale(1.2) rotate(180deg); } 100% { transform: scale(0) rotate(360deg); opacity: 0; } }
-        .floating-heart { position: fixed; font-size: 30px; animation: heartFloat 1s ease-out forwards; pointer-events: none; z-index: 9999; }
+        .notif-title { font-weight: 700; color: var(--primary); margin-bottom: 5px; font-size: 14px; }
+        .notif-body { font-size: 13px; color: #666; }
 
         /* LOADING */
-        .loading { display: none; position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%); z-index: 2000; }
-        .loading.show { display: block; }
-        .loading-spinner { width: 50px; height: 50px; border: 4px solid #f3f3f3; border-top: 4px solid var(--primary); border-radius: 50%; animation: spin 1s linear infinite; }
+        .loading-overlay {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(255,255,255,0.9);
+            z-index: 2000;
+            justify-content: center;
+            align-items: center;
+            flex-direction: column;
+        }
+        .loading-overlay.show { display: flex; }
+        .spinner {
+            width: 50px;
+            height: 50px;
+            border: 4px solid #f3f3f3;
+            border-top: 4px solid var(--primary);
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+        }
         @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
+        .loading-text { margin-top: 15px; color: var(--primary); font-weight: 600; }
     </style>
 </head>
 <body>
 
-    <!-- Loading -->
-    <div class="loading" id="loading">
-        <div class="loading-spinner"></div>
+    <div class="loading-overlay" id="loadingOverlay">
+        <div class="spinner"></div>
+        <div class="loading-text">Loading...</div>
     </div>
 
-    <!-- Camera Modal -->
-    <div class="modal" id="cameraModal">
-        <div class="modal-header">
-            <span>📷 Camera</span>
-            <button onclick="closeCamera()" style="background:none;border:none;color:white;font-size:24px;">✕</button>
-        </div>
-        <div class="modal-content">
-            <video id="cameraVideo" autoplay playsinline style="width:100%;height:100%;object-fit:cover;"></video>
-            <canvas id="cameraCanvas" style="display:none;"></canvas>
-        </div>
-        <div class="modal-controls">
-            <button class="modal-btn" onclick="switchCamera()">🔄</button>
-            <button class="modal-btn primary" onclick="takePhoto()">📷</button>
-            <button class="modal-btn" onclick="closeCamera()">✕</button>
-        </div>
-    </div>
-
-    <!-- Recording Indicator -->
-    <div class="recording-indicator" id="recordingIndicator">
-        🔴 Recording... <span id="recordTime">0:00</span>
-    </div>
-
-    <!-- Notification -->
     <div class="notification" id="notification">
-        <div style="font-weight:600;color:var(--primary);margin-bottom:5px;font-size:13px;" id="notifTitle">Title</div>
-        <div style="font-size:12px;color:#666;" id="notifBody">Message</div>
+        <div class="notif-title" id="notifTitle">Title</div>
+        <div class="notif-body" id="notifBody">Message</div>
     </div>
 
-    <!-- Search Bar -->
-    <div class="search-bar" id="searchBar">
-        <input type="text" class="search-input" id="searchInput" placeholder="Search messages..." onkeyup="searchMessages()">
-        <button class="search-btn" onclick="toggleSearch()">✕</button>
-    </div>
-
-    <!-- Emoji Picker -->
-    <div class="emoji-picker" id="emojiPicker">
-        <div class="emoji-grid">
-            <span class="emoji-item" onclick="insertEmoji('😀')">😀</span>
-            <span class="emoji-item" onclick="insertEmoji('😂')">😂</span>
-            <span class="emoji-item" onclick="insertEmoji('🥰')">🥰</span>
-            <span class="emoji-item" onclick="insertEmoji('😍')">😍</span>
-            <span class="emoji-item" onclick="insertEmoji('😘')">😘</span>
-            <span class="emoji-item" onclick="insertEmoji('🤗')">🤗</span>
-            <span class="emoji-item" onclick="insertEmoji('🤔')">🤔</span>
-            <span class="emoji-item" onclick="insertEmoji('😎')">😎</span>
-            <span class="emoji-item" onclick="insertEmoji('😢')">😢</span>
-            <span class="emoji-item" onclick="insertEmoji('😡')">😡</span>
-            <span class="emoji-item" onclick="insertEmoji('🥳')">🥳</span>
-            <span class="emoji-item" onclick="insertEmoji('😴')">😴</span>
-            <span class="emoji-item" onclick="insertEmoji('❤️')">❤️</span>
-            <span class="emoji-item" onclick="insertEmoji('💕')">💕</span>
-            <span class="emoji-item" onclick="insertEmoji('💖')">💖</span>
-            <span class="emoji-item" onclick="insertEmoji('💙')">💙</span>
-            <span class="emoji-item" onclick="insertEmoji('🌹')">🌹</span>
-            <span class="emoji-item" onclick="insertEmoji('🌸')">🌸</span>
-            <span class="emoji-item" onclick="insertEmoji('🎉')">🎉</span>
-            <span class="emoji-item" onclick="insertEmoji('🎁')">🎁</span>
-            <span class="emoji-item" onclick="insertEmoji('🎂')">🎂</span>
-            <span class="emoji-item" onclick="insertEmoji('☕')">☕</span>
-            <span class="emoji-item" onclick="insertEmoji('🍕')">🍕</span>
-            <span class="emoji-item" onclick="insertEmoji('🌙')">🌙</span>
-        </div>
-    </div>
-
-    <!-- Header -->
     <header class="header">
-        <div class="header-left">
-            <div class="partner-avatar">
-                <span id="partnerAvatar">👩</span>
-                <div class="online-indicator" id="onlineIndicator"></div>
-            </div>
-            <div class="partner-details">
-                <h3 id="partnerName">Partner</h3>
-                <div class="partner-status">
-                    <span id="lastSeen">Loading...</span>
-                    <span class="typing-indicator" id="typingIndicator">
-                        typing<span class="typing-dots"><span>.</span><span>.</span><span>.</span></span>
-                    </span>
-                </div>
-            </div>
-        </div>
-        <div class="header-actions">
-            <button class="icon-btn" onclick="toggleSearch()" title="Search">🔍</button>
-            <a href="features.html" class="icon-btn" title="Features">⚡</a>
-            <button class="icon-btn" onclick="openCamera()" title="Camera">📷</button>
-            <button class="icon-btn" onclick="logout()" title="Logout">🚪</button>
-        </div>
+        <button class="back-btn" onclick="goBack()">←</button>
+        <div class="header-title">⚡ Features & Tools</div>
+        <div style="width: 40px;"></div>
     </header>
 
-    <!-- Main Content -->
-    <div class="main-content">
-        <!-- Chat Area -->
-        <div class="chat-area">
-            <div class="messages-container" id="messagesContainer">
-                <div class="typing-bubble" id="typingBubble">
-                    <span></span><span></span><span></span>
-                </div>
-            </div>
+    <div class="container">
 
-            <div class="input-area">
-                <div class="input-wrapper">
-                    <input type="text" class="message-input" id="messageInput" placeholder="Type a message..." autocomplete="off" onkeypress="handleKeyPress(event)">
-                    <div class="input-actions">
-                        <button class="input-btn" onclick="toggleEmojiPicker()" title="Emoji">😊</button>
-                        <button class="input-btn" onclick="toggleRecording()" id="micBtn" title="Voice">🎤</button>
-                        <button class="input-btn" onclick="sendHeart()" title="Send Love">❤️</button>
-                    </div>
-                </div>
-                <button class="send-btn" onclick="sendMessage()">➤</button>
+        <div class="feature-card">
+            <div class="feature-title">🎨 Choose Theme</div>
+            <div class="theme-colors">
+                <div class="theme-color active" style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);" onclick="setTheme('#667eea', '#764ba2', this)" title="Purple Love"></div>
+                <div class="theme-color" style="background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);" onclick="setTheme('#f093fb', '#f5576c', this)" title="Pink Romance"></div>
+                <div class="theme-color" style="background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);" onclick="setTheme('#4facfe', '#00f2fe', this)" title="Ocean Blue"></div>
+                <div class="theme-color" style="background: linear-gradient(135deg, #43e97b 0%, #38f9d7 100%);" onclick="setTheme('#43e97b', '#38f9d7', this)" title="Mint Fresh"></div>
+                <div class="theme-color" style="background: linear-gradient(135deg, #fa709a 0%, #fee140 100%);" onclick="setTheme('#fa709a', '#fee140', this)" title="Sunset"></div>
             </div>
         </div>
+
+        <div class="feature-card">
+            <div class="feature-title">😊 Share Your Mood</div>
+            <div class="mood-grid">
+                <button class="mood-btn" onclick="setMood('happy')">
+                    😊
+                    <span class="mood-label">Happy</span>
+                </button>
+                <button class="mood-btn" onclick="setMood('sad')">
+                    😔
+                    <span class="mood-label">Sad</span>
+                </button>
+                <button class="mood-btn" onclick="setMood('love')">
+                    😍
+                    <span class="mood-label">Love</span>
+                </button>
+                <button class="mood-btn" onclick="setMood('angry')">
+                    😡
+                    <span class="mood-label">Angry</span>
+                </button>
+                <button class="mood-btn" onclick="setMood('tired')">
+                    😴
+                    <span class="mood-label">Tired</span>
+                </button>
+                <button class="mood-btn" onclick="setMood('excited')">
+                    🤩
+                    <span class="mood-label">Excited</span>
+                </button>
+            </div>
+        </div>
+
+        <div class="feature-card">
+            <div class="feature-title">📍 Location Sharing</div>
+            <button class="action-btn" onclick="shareLocation()">
+                📍 Share My Location
+            </button>
+            <button class="action-btn info" onclick="requestLocation()">
+                👀 Request Partner's Location
+            </button>
+        </div>
+
+        <div class="feature-card" style="border: 2px solid #e74c3c;">
+            <div class="feature-title" style="color: #e74c3c;">🚨 Emergency Alert</div>
+            <button class="action-btn danger" onclick="sendEmergency()">
+                🚨 SEND EMERGENCY ALERT
+            </button>
+        </div>
+
+        <div class="feature-card">
+            <div class="feature-title">⚡ Quick Messages</div>
+            <div class="quick-grid">
+                <button class="quick-btn" onclick="quickSend('miss you')">💕 Miss You</button>
+                <button class="quick-btn" onclick="quickSend('call me')">📞 Call Me</button>
+                <button class="quick-btn" onclick="quickSend('good night')">🌙 Good Night</button>
+                <button class="quick-btn" onclick="quickSend('good morning')">☀️ Good Morning</button>
+                <button class="quick-btn" onclick="quickSend('thinking of you')">💭 Thinking of You</button>
+                <button class="quick-btn" onclick="quickSend('love you')">❤️ Love You</button>
+            </div>
+        </div>
+
+        <div class="feature-card">
+            <div class="feature-title">📊 Your Stats</div>
+            <div class="stats-grid">
+                <div class="stat-item">
+                    <div class="stat-value" id="msgCount">0</div>
+                    <div class="stat-label">Messages</div>
+                </div>
+                <div class="stat-item">
+                    <div class="stat-value" id="heartCount">0</div>
+                    <div class="stat-label">Hearts</div>
+                </div>
+                <div class="stat-item">
+                    <div class="stat-value" id="daysTogether">0</div>
+                    <div class="stat-label">Days</div>
+                </div>
+            </div>
+        </div>
+
+        <div class="feature-card">
+            <div class="feature-title">🎵 Special Moments</div>
+            <button class="action-btn success" onclick="sendLoveSong()">
+                🎵 Send Love Song
+            </button>
+            <button class="action-btn warning" onclick="sendVirtualHug()">
+                🤗 Send Virtual Hug
+            </button>
+        </div>
+
     </div>
 
     <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-database-compat.js"></script>
 
     <script>
-        // Firebase Config
+        // ✅ CORRECT REAL CONFIG (No Placeholder)
         const firebaseConfig = {
           apiKey: "AIzaSyD9izkgUqK9kmxiUd2lsdpgs5Krpkve68E",
           authDomain: "mychattapp-a5fcc.firebaseapp.com",
@@ -356,33 +426,34 @@
             window.location.href = 'index.html';
         }
 
-        // Setup
         const partner = currentUser === 'ahad' ? 'amna' : 'ahad';
         const partnerName = currentUser === 'ahad' ? 'Amna' : 'Ahad';
-        const avatar = currentUser === 'ahad' ? '👩' : '👨';
-
-        document.getElementById('partnerName').innerText = partnerName;
-        document.getElementById('partnerAvatar').innerText = avatar;
-
-        const container = document.getElementById('messagesContainer');
-        const messageInput = document.getElementById('messageInput');
-        let typingTimer = null;
-        let mediaRecorder = null;
-        let recordInterval = null;
-        let recordSeconds = 0;
-        let currentStream = null;
-        let facingMode = 'user';
-        let isRecording = false;
 
         // Initialize
         document.addEventListener('DOMContentLoaded', function() {
-            loadMessages();
-            setupTypingListener();
-            setupPresence();
             loadTheme();
+            updateStats();
         });
 
+        // ==================== NAVIGATION ====================
+
+        function goBack() {
+            window.location.href = 'dashboard.html';
+        }
+
         // ==================== THEME ====================
+
+        function setTheme(primary, secondary, element) {
+            document.documentElement.style.setProperty('--primary', primary);
+            document.documentElement.style.setProperty('--secondary', secondary);
+
+            localStorage.setItem('theme', JSON.stringify({ primary, secondary }));
+
+            document.querySelectorAll('.theme-color').forEach(el => el.classList.remove('active'));
+            element.classList.add('active');
+
+            showNotification('Theme Updated!', 'Your new theme has been applied.');
+        }
 
         function loadTheme() {
             const saved = localStorage.getItem('theme');
@@ -390,350 +461,96 @@
                 const theme = JSON.parse(saved);
                 document.documentElement.style.setProperty('--primary', theme.primary);
                 document.documentElement.style.setProperty('--secondary', theme.secondary);
+
+                // Set active theme
+                document.querySelectorAll('.theme-color').forEach(el => {
+                    el.classList.remove('active');
+                    const bg = el.style.background;
+                    if (bg.includes(theme.primary.substring(1))) {
+                        el.classList.add('active');
+                    }
+                });
             }
         }
 
-        // ==================== MESSAGING ====================
+        // ==================== MOOD METER (FIXED ERROR) ====================
 
-        function sendMessage() {
-            const text = messageInput.value.trim();
-            if (!text) return;
+        function setMood(mood) {
+            // FIXED: Used double quotes " " to avoid error with I'm
+            const messages = {
+                happy: "I'm feeling happy today! 😊",
+                sad: "I'm feeling a bit sad... 😔",
+                love: "I'm feeling so much love! 😍",
+                angry: "I'm feeling angry right now 😡",
+                tired: "I'm so tired... 😴",
+                excited: "I'm super excited! 🤩"
+            };
 
             const message = {
-                text: text,
+                text: messages[mood] || `Mood: ${mood}`,
                 sender: currentUser,
                 timestamp: Date.now(),
                 type: 'text'
             };
 
             db.ref('messages').push(message);
-            messageInput.value = '';
-            hideEmojiPicker();
-
-            db.ref('typing/' + currentUser).set(false);
+            showNotification('Mood Shared!', `You shared your mood: ${mood}`);
         }
 
-        function handleKeyPress(e) {
-            if (e.key === 'Enter') {
-                sendMessage();
-            } else {
-                db.ref('typing/' + currentUser).set(true);
-                clearTimeout(typingTimer);
-                typingTimer = setTimeout(() => {
-                    db.ref('typing/' + currentUser).set(false);
-                }, 2000);
-            }
-        }
+        // ==================== LOCATION ====================
 
-        function loadMessages() {
-            db.ref('messages').orderByChild('timestamp').limitToLast(100).on('child_added', (snapshot) => {
-                const msg = snapshot.val();
-                msg.id = snapshot.key;
-                displayMessage(msg);
-                scrollToBottom();
-            });
-        }
-
-        function displayMessage(msg) {
-            const isSent = msg.sender === currentUser;
-            const div = document.createElement('div');
-            div.className = `message ${isSent ? 'sent' : 'received'}`;
-            div.id = 'msg-' + msg.id;
-
-            const time = new Date(msg.timestamp).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
-
-            let content = '';
-            if (msg.type === 'image') {
-                content = `<img src="${msg.text}" alt="Image" onload="scrollToBottom()">`;
-            } else if (msg.type === 'audio') {
-                content = `<audio controls src="${msg.text}"></audio>`;
-            } else if (msg.type === 'location') {
-                content = `📍 <a href="${msg.text}" target="_blank" style="color:${isSent ? 'white' : 'var(--primary)'};text-decoration:underline;">View Location</a>`;
-            } else if (msg.type === 'emergency') {
-                content = `<div style="background:#c0392b;color:white;padding:12px;border-radius:8px;text-align:center;font-weight:bold;font-size:16px;">🚨 EMERGENCY 🚨<br><span style="font-size:14px;font-weight:normal;">${msg.text}</span></div>`;
-            } else {
-                content = escapeHtml(msg.text);
+        function shareLocation() {
+            if (!navigator.geolocation) {
+                showNotification('Error', 'Geolocation not supported on this device');
+                return;
             }
 
-            div.innerHTML = `
-                ${content}
-                <div class="message-time">${time}</div>
-            `;
-
-            const typingBubble = document.getElementById('typingBubble');
-            container.insertBefore(div, typingBubble);
-        }
-
-        function escapeHtml(text) {
-            const div = document.createElement('div');
-            div.textContent = text;
-            return div.innerHTML;
-        }
-
-        // ==================== TYPING INDICATOR ====================
-
-        function setupTypingListener() {
-            db.ref('typing/' + partner).on('value', (snapshot) => {
-                const isTyping = snapshot.val();
-                const indicator = document.getElementById('typingIndicator');
-                const bubble = document.getElementById('typingBubble');
-
-                if (isTyping) {
-                    indicator.classList.add('show');
-                    bubble.classList.add('show');
-                } else {
-                    indicator.classList.remove('show');
-                    bubble.classList.remove('show');
-                }
-            });
-        }
-
-        // ==================== PRESENCE ====================
-
-        function setupPresence() {
-            const myStatus = db.ref('users/' + currentUser);
-            myStatus.onDisconnect().update({ 
-                online: false, 
-                lastSeen: firebase.database.ServerValue.TIMESTAMP 
-            });
-            myStatus.update({ online: true });
-
-            db.ref('users/' + partner).on('value', (snapshot) => {
-                const data = snapshot.val();
-                const indicator = document.getElementById('onlineIndicator');
-                const lastSeen = document.getElementById('lastSeen');
-
-                if (data && data.online) {
-                    indicator.classList.remove('offline');
-                    lastSeen.textContent = 'Online';
-                    lastSeen.style.color = '#2ecc71';
-                } else {
-                    indicator.classList.add('offline');
-                    const time = data && data.lastSeen ? new Date(data.lastSeen).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }) : 'Offline';
-                    lastSeen.textContent = 'Last seen ' + time;
-                    lastSeen.style.color = '';
-                }
-            });
-        }
-
-        // ==================== CAMERA ====================
-
-        function openCamera() {
-            document.getElementById('cameraModal').classList.add('show');
-            startCamera();
-        }
-
-        function closeCamera() {
-            document.getElementById('cameraModal').classList.remove('show');
-            stopCamera();
-        }
-
-        async function startCamera() {
-            try {
-                currentStream = await navigator.mediaDevices.getUserMedia({ 
-                    video: { facingMode: facingMode } 
-                });
-                document.getElementById('cameraVideo').srcObject = currentStream;
-            } catch (err) {
-                showNotification('Error', 'Could not access camera: ' + err.message);
-            }
-        }
-
-        function stopCamera() {
-            if (currentStream) {
-                currentStream.getTracks().forEach(track => track.stop());
-                currentStream = null;
-            }
-        }
-
-        function switchCamera() {
-            facingMode = facingMode === 'user' ? 'environment' : 'user';
-            stopCamera();
-            startCamera();
-        }
-
-        function takePhoto() {
-            const video = document.getElementById('cameraVideo');
-            const canvas = document.getElementById('cameraCanvas');
-            canvas.width = video.videoWidth;
-            canvas.height = video.videoHeight;
-            canvas.getContext('2d').drawImage(video, 0, 0);
-
-            const imageData = canvas.toDataURL('image/jpeg');
-
-            const message = {
-                text: imageData,
-                sender: currentUser,
-                timestamp: Date.now(),
-                type: 'image'
-            };
-
-            db.ref('messages').push(message);
-            closeCamera();
-        }
-
-        // ==================== VOICE RECORDING ====================
-
-        async function toggleRecording() {
-            if (isRecording) {
-                stopRecording();
-            } else {
-                startRecording();
-            }
-        }
-
-        async function startRecording() {
-            try {
-                const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
-                mediaRecorder = new MediaRecorder(stream);
-                const chunks = [];
-
-                mediaRecorder.ondataavailable = (e) => chunks.push(e.data);
-                mediaRecorder.onstop = () => {
-                    const blob = new Blob(chunks, { type: 'audio/webm' });
-                    const audioUrl = URL.createObjectURL(blob);
+            showLoading(true);
+            navigator.geolocation.getCurrentPosition(
+                (position) => {
+                    showLoading(false);
+                    const lat = position.coords.latitude;
+                    const lng = position.coords.longitude;
+                    const mapUrl = `http://googleusercontent.com/maps.google.com/?q=${lat},${lng}`;
 
                     const message = {
-                        text: audioUrl,
+                        text: mapUrl,
                         sender: currentUser,
                         timestamp: Date.now(),
-                        type: 'audio'
+                        type: 'location'
                     };
 
                     db.ref('messages').push(message);
-                };
-
-                mediaRecorder.start();
-                isRecording = true;
-                document.getElementById('micBtn').textContent = '⏹️';
-                document.getElementById('recordingIndicator').classList.add('show');
-
-                recordSeconds = 0;
-                recordInterval = setInterval(() => {
-                    recordSeconds++;
-                    const mins = Math.floor(recordSeconds / 60);
-                    const secs = recordSeconds % 60;
-                    document.getElementById('recordTime').textContent = `${mins}:${secs.toString().padStart(2, '0')}`;
-                }, 1000);
-
-            } catch (err) {
-                showNotification('Error', 'Could not access microphone: ' + err.message);
-            }
+                    showNotification('Location Shared!', 'Your location has been sent to ' + partnerName);
+                },
+                (error) => {
+                    showLoading(false);
+                    showNotification('Error', 'Could not get location: ' + error.message);
+                }
+            );
         }
 
-        function stopRecording() {
-            if (mediaRecorder && isRecording) {
-                mediaRecorder.stop();
-                mediaRecorder.stream.getTracks().forEach(track => track.stop());
-                isRecording = false;
-                document.getElementById('micBtn').textContent = '🎤';
-                document.getElementById('recordingIndicator').classList.remove('show');
-                clearInterval(recordInterval);
-            }
-        }
-
-        // ==================== HEART ====================
-
-        function sendHeart() {
-            const hearts = ['❤️', '💕', '💖', '💗', '💓', '💝'];
-            const heart = hearts[Math.floor(Math.random() * hearts.length)];
-
+        function requestLocation() {
             const message = {
-                text: heart,
+                text: `📍 ${partnerName}, please share your location with me!`,
                 sender: currentUser,
                 timestamp: Date.now(),
                 type: 'text'
             };
-
             db.ref('messages').push(message);
-            createFloatingHeart();
+            showNotification('Request Sent!', `Location request sent to ${partnerName}`);
         }
 
-        function createFloatingHeart() {
-            const heart = document.createElement('div');
-            heart.className = 'floating-heart';
-            heart.textContent = '❤️';
-            heart.style.left = Math.random() * window.innerWidth + 'px';
-            heart.style.top = window.innerHeight + 'px';
-            document.body.appendChild(heart);
+        // ==================== EMERGENCY ====================
 
-            setTimeout(() => heart.remove(), 1000);
-        }
+        function sendEmergency() {
+            if (!confirm('🚨 Are you sure you want to send an EMERGENCY alert?')) return;
 
-        // ==================== SEARCH ====================
+            const message = {
+                text: `🚨 EMERGENCY ALERT from ${currentUser.toUpperCase()}! Please contact immediately! 🚨`,
+                sender: currentUser,
+                timestamp: Date.now(),
+                type: 'emergency'
+            };
 
-        function toggleSearch() {
-            const searchBar = document.getElementById('searchBar');
-            searchBar.classList.toggle('show');
-            if (searchBar.classList.contains('show')) {
-                document.getElementById('searchInput').focus();
-            } else {
-                document.querySelectorAll('.message').forEach(msg => {
-                    msg.style.display = 'block';
-                });
-            }
-        }
-
-        function searchMessages() {
-            const query = document.getElementById('searchInput').value.toLowerCase();
-            document.querySelectorAll('.message').forEach(msg => {
-                const text = msg.textContent.toLowerCase();
-                msg.style.display = text.includes(query) ? 'block' : 'none';
-            });
-        }
-
-        // ==================== EMOJI PICKER ====================
-
-        function toggleEmojiPicker() {
-            document.getElementById('emojiPicker').classList.toggle('show');
-        }
-
-        function hideEmojiPicker() {
-            document.getElementById('emojiPicker').classList.remove('show');
-        }
-
-        function insertEmoji(emoji) {
-            messageInput.value += emoji;
-            messageInput.focus();
-        }
-
-        // ==================== UTILITIES ====================
-
-        function scrollToBottom() {
-            container.scrollTop = container.scrollHeight;
-        }
-
-        function showNotification(title, body) {
-            document.getElementById('notifTitle').textContent = title;
-            document.getElementById('notifBody').textContent = body;
-            document.getElementById('notification').classList.add('show');
-
-            setTimeout(() => {
-                document.getElementById('notification').classList.remove('show');
-            }, 3000);
-        }
-
-        function logout() {
-            if (confirm('Are you sure you want to logout?')) {
-                db.ref('users/' + currentUser).update({ online: false, lastSeen: Date.now() });
-                localStorage.removeItem('currentUser');
-                window.location.href = 'index.html';
-            }
-        }
-
-        // Close emoji picker when clicking outside
-        document.addEventListener('click', (e) => {
-            if (!e.target.closest('.input-area') && !e.target.closest('.emoji-picker')) {
-                hideEmojiPicker();
-            }
-        });
-
-        // Service Worker
-        if ('serviceWorker' in navigator) {
-            navigator.serviceWorker.register('sw.js').catch(() => {
-                console.log('Service Worker registration failed');
-            });
-        }
-    </script>
-</body>
-</html>
+            db.ref('mess
