@@ -7,10 +7,10 @@
     <meta name="apple-mobile-web-app-capable" content="yes">
     <link rel="manifest" href="manifest.json">
     <title>❤️ Ahad & Amna - Dashboard</title>
-    
+
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap');
-        
+
         * { margin: 0; padding: 0; box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
 
         :root { 
@@ -65,7 +65,21 @@
         @keyframes bounce { 0%, 60%, 100% { transform: translateY(0); } 30% { transform: translateY(-5px); } }
 
         .header-actions { display: flex; gap: 8px; }
-        .icon-btn { width: 35px; height: 35px; border-radius: 50%; border: none; background: rgba(255,255,255,0.2); color: white; font-size: 18px; cursor: pointer; display: flex; align-items: center; justify-content: center; transition: all 0.2s; }
+        .icon-btn { 
+            width: 40px; 
+            height: 40px; 
+            border-radius: 50%; 
+            border: none; 
+            background: rgba(255,255,255,0.2); 
+            color: white; 
+            font-size: 20px; 
+            cursor: pointer; 
+            display: flex; 
+            align-items: center; 
+            justify-content: center; 
+            transition: all 0.2s;
+            text-decoration: none;
+        }
         .icon-btn:hover { background: rgba(255,255,255,0.3); transform: scale(1.1); }
 
         /* MAIN CONTENT */
@@ -138,111 +152,13 @@
         .input-wrapper { flex: 1; position: relative; }
         .message-input { width: 100%; padding: 12px 80px 12px 15px; border: 1px solid #ddd; border-radius: 25px; outline: none; font-size: 15px; background: #f9f9f9; transition: all 0.2s; }
         .message-input:focus { border-color: var(--primary); background: white; box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1); }
-        
+
         .input-actions { position: absolute; right: 8px; top: 50%; transform: translateY(-50%); display: flex; gap: 5px; }
         .input-btn { background: none; border: none; font-size: 20px; cursor: pointer; padding: 5px; transition: transform 0.2s; }
         .input-btn:hover { transform: scale(1.2); }
         .send-btn { width: 45px; height: 45px; border-radius: 50%; background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%); color: white; border: none; font-size: 20px; display: flex; align-items: center; justify-content: center; box-shadow: 0 2px 5px rgba(0,0,0,0.2); cursor: pointer; flex-shrink: 0; transition: all 0.2s; }
         .send-btn:hover { transform: scale(1.1); box-shadow: 0 4px 10px rgba(0,0,0,0.3); }
         .send-btn:active { transform: scale(0.95); }
-
-        /* SIDEBAR - FIXED RIGHT */
-        .sidebar {
-            position: fixed;
-            top: 60px;
-            right: 0;
-            width: 300px;
-            height: calc(100% - 60px);
-            background: white;
-            border-left: 1px solid #eee;
-            padding: 15px;
-            overflow-y: auto;
-            z-index: 200;
-            transform: translateX(100%);
-            transition: transform 0.3s ease;
-            box-shadow: -5px 0 20px rgba(0,0,0,0.2);
-        }
-
-        .sidebar.open {
-            transform: translateX(0);
-        }
-
-        /* DESKTOP - always show sidebar */
-        @media (min-width: 769px) {
-            .sidebar { transform: translateX(0); box-shadow: none; }
-            .menu-btn { display: none !important; }
-            .close-btn { display: none !important; }
-            .input-area { right: 300px; }
-        }
-
-        /* MOBILE */
-        @media (max-width: 768px) {
-            .sidebar { width: 85%; max-width: 320px; }
-            .menu-btn { display: flex !important; }
-        }
-
-        .menu-btn { display: none; }
-
-        .sidebar-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            padding-bottom: 15px;
-            border-bottom: 2px solid #eee;
-            margin-bottom: 15px;
-        }
-
-        .sidebar-title { font-size: 16px; font-weight: 700; color: var(--primary); }
-
-        .close-btn { width: 32px; height: 32px; border-radius: 50%; border: none; background: #f0f0f0; font-size: 18px; cursor: pointer; display: flex; align-items: center; justify-content: center; transition: all 0.2s; }
-        .close-btn:hover { background: #e0e0e0; }
-
-        .feature-card { background: #f8f9fa; padding: 15px; border-radius: 12px; margin-bottom: 15px; }
-        .feature-title { font-size: 12px; font-weight: 600; color: #555; margin-bottom: 12px; text-transform: uppercase; letter-spacing: 1px; }
-
-        .mood-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; }
-        .mood-btn { padding: 15px; border: 2px solid #e0e0e0; border-radius: 10px; background: white; cursor: pointer; font-size: 24px; transition: all 0.2s; touch-action: manipulation; }
-        .mood-btn:hover, .mood-btn:active { border-color: var(--primary); background: #f0f0ff; transform: scale(1.05); }
-        .mood-btn.active { border-color: var(--primary); background: linear-gradient(135deg, var(--primary)20 0%, var(--secondary)20 100%); }
-
-        .action-btn { 
-            width: 100%; 
-            padding: 14px; 
-            margin-bottom: 10px; 
-            border: none; 
-            border-radius: 10px; 
-            background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%); 
-            color: white; 
-            font-size: 14px; 
-            font-weight: 600; 
-            cursor: pointer; 
-            transition: all 0.2s; 
-            display: flex; 
-            align-items: center; 
-            justify-content: center; 
-            gap: 8px; 
-            touch-action: manipulation;
-        }
-        .action-btn:hover { transform: translateY(-2px); box-shadow: 0 4px 10px rgba(0,0,0,0.2); }
-        .action-btn:active { transform: scale(0.98); }
-        .action-btn.danger { background: linear-gradient(135deg, #e74c3c 0%, #c0392b 100%); }
-        .action-btn.success { background: linear-gradient(135deg, #2ecc71 0%, #27ae60 100%); }
-        .action-btn.warning { background: linear-gradient(135deg, #f39c12 0%, #e67e22 100%); }
-        .action-btn.info { background: linear-gradient(135deg, #3498db 0%, #2980b9 100%); }
-
-        /* OVERLAY - behind sidebar */
-        .overlay {
-            display: none;
-            position: fixed;
-            top: 60px;
-            left: 0;
-            right: 0;
-            bottom: 0;
-            background: rgba(0,0,0,0.5);
-            z-index: 150;
-        }
-        
-        .overlay.show { display: block; }
 
         /* MODALS */
         .modal { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: black; z-index: 1000; flex-direction: column; }
@@ -274,20 +190,12 @@
 
         /* SEARCH BAR */
         .search-bar { display: none; position: fixed; top: 60px; left: 0; right: 0; background: white; padding: 10px 15px; border-bottom: 1px solid #eee; z-index: 90; }
-        @media (min-width: 769px) { .search-bar { right: 300px; } }
         .search-bar.show { display: flex; gap: 10px; }
         .search-input { flex: 1; padding: 10px 15px; border: 1px solid #ddd; border-radius: 20px; outline: none; font-size: 14px; }
         .search-btn { padding: 10px 20px; border: none; background: var(--primary); color: white; border-radius: 20px; cursor: pointer; font-weight: 600; }
 
-        /* THEME PICKER */
-        .theme-colors { display: flex; gap: 10px; flex-wrap: wrap; }
-        .theme-color { width: 40px; height: 40px; border-radius: 50%; cursor: pointer; border: 3px solid transparent; transition: all 0.2s; }
-        .theme-color:hover { transform: scale(1.1); }
-        .theme-color.active { border-color: #333; box-shadow: 0 0 0 2px white, 0 0 0 4px #333; }
-
         /* EMOJI PICKER */
         .emoji-picker { display: none; position: fixed; bottom: 75px; left: 10px; right: 10px; background: white; border-radius: 15px; box-shadow: 0 -5px 20px rgba(0,0,0,0.1); padding: 15px; z-index: 85; max-height: 250px; overflow-y: auto; }
-        @media (min-width: 769px) { .emoji-picker { right: 310px; } }
         .emoji-picker.show { display: block; }
         .emoji-grid { display: grid; grid-template-columns: repeat(8, 1fr); gap: 8px; }
         .emoji-item { font-size: 24px; cursor: pointer; text-align: center; padding: 8px; border-radius: 8px; transition: all 0.2s; }
@@ -302,22 +210,9 @@
         .loading.show { display: block; }
         .loading-spinner { width: 50px; height: 50px; border: 4px solid #f3f3f3; border-top: 4px solid var(--primary); border-radius: 50%; animation: spin 1s linear infinite; }
         @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
-
-        /* STATS */
-        .stats-row { display: flex; justify-content: space-between; padding: 8px 0; border-bottom: 1px solid #eee; font-size: 13px; }
-        .stats-row:last-child { border-bottom: none; }
-        .stats-label { color: #666; }
-        .stats-value { font-weight: 600; color: var(--primary); }
-
-        /* DATE SEPARATOR */
-        .date-separator { text-align: center; margin: 15px 0; }
-        .date-separator span { background: rgba(0,0,0,0.1); padding: 5px 15px; border-radius: 15px; font-size: 11px; color: #666; }
     </style>
 </head>
 <body>
-
-    <!-- Overlay - for mobile sidebar -->
-    <div class="overlay" id="overlay"></div>
 
     <!-- Loading -->
     <div class="loading" id="loading">
@@ -407,7 +302,7 @@
         </div>
         <div class="header-actions">
             <button class="icon-btn" onclick="toggleSearch()" title="Search">🔍</button>
-            <button class="icon-btn menu-btn" id="menuBtn" title="Menu">☰</button>
+            <a href="features.html" class="icon-btn" title="Features">⚡</a>
             <button class="icon-btn" onclick="openCamera()" title="Camera">📷</button>
             <button class="icon-btn" onclick="logout()" title="Logout">🚪</button>
         </div>
@@ -422,7 +317,7 @@
                     <span></span><span></span><span></span>
                 </div>
             </div>
-            
+
             <div class="input-area">
                 <div class="input-wrapper">
                     <input type="text" class="message-input" id="messageInput" placeholder="Type a message..." autocomplete="off" onkeypress="handleKeyPress(event)">
@@ -433,86 +328,6 @@
                     </div>
                 </div>
                 <button class="send-btn" onclick="sendMessage()">➤</button>
-            </div>
-        </div>
-
-        <!-- Sidebar -->
-        <div class="sidebar" id="sidebar">
-            <div class="sidebar-header">
-                <span class="sidebar-title">⚡ Features</span>
-                <button class="close-btn" id="closeBtn">✕</button>
-            </div>
-
-            <!-- Theme -->
-            <div class="feature-card">
-                <div class="feature-title">🎨 Theme</div>
-                <div class="theme-colors">
-                    <div class="theme-color active" style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);" onclick="setTheme('#667eea', '#764ba2', this)"></div>
-                    <div class="theme-color" style="background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);" onclick="setTheme('#f093fb', '#f5576c', this)"></div>
-                    <div class="theme-color" style="background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);" onclick="setTheme('#4facfe', '#00f2fe', this)"></div>
-                    <div class="theme-color" style="background: linear-gradient(135deg, #43e97b 0%, #38f9d7 100%);" onclick="setTheme('#43e97b', '#38f9d7', this)"></div>
-                    <div class="theme-color" style="background: linear-gradient(135deg, #fa709a 0%, #fee140 100%);" onclick="setTheme('#fa709a', '#fee140', this)"></div>
-                </div>
-            </div>
-
-            <!-- Mood Meter -->
-            <div class="feature-card">
-                <div class="feature-title">😊 Mood Meter</div>
-                <div class="mood-grid">
-                    <button class="mood-btn" onclick="setMood('happy')">😊</button>
-                    <button class="mood-btn" onclick="setMood('sad')">😔</button>
-                    <button class="mood-btn" onclick="setMood('love')">😍</button>
-                    <button class="mood-btn" onclick="setMood('angry')">😡</button>
-                    <button class="mood-btn" onclick="setMood('tired')">😴</button>
-                    <button class="mood-btn" onclick="setMood('excited')">🤩</button>
-                </div>
-            </div>
-
-            <!-- Location -->
-            <div class="feature-card">
-                <div class="feature-title">📍 Location</div>
-                <button class="action-btn" onclick="shareLocation()">📍 Share My Location</button>
-                <button class="action-btn info" onclick="requestLocation()">👀 Request Partner Location</button>
-            </div>
-
-            <!-- Emergency -->
-            <div class="feature-card">
-                <div class="feature-title">🚨 Emergency</div>
-                <button class="action-btn danger" onclick="sendEmergency()">🚨 SEND EMERGENCY ALERT</button>
-            </div>
-
-            <!-- Quick Send -->
-            <div class="feature-card">
-                <div class="feature-title">⚡ Quick Send</div>
-                <button class="action-btn" onclick="quickSend('miss you')">💕 Miss You</button>
-                <button class="action-btn" onclick="quickSend('call me')">📞 Call Me</button>
-                <button class="action-btn" onclick="quickSend('good night')">🌙 Good Night</button>
-                <button class="action-btn" onclick="quickSend('good morning')">☀️ Good Morning</button>
-                <button class="action-btn" onclick="quickSend('thinking of you')">💭 Thinking of You</button>
-            </div>
-
-            <!-- Stats -->
-            <div class="feature-card">
-                <div class="feature-title">📊 Stats</div>
-                <div class="stats-row">
-                    <span class="stats-label">💬 Messages:</span>
-                    <span class="stats-value" id="msgCount">0</span>
-                </div>
-                <div class="stats-row">
-                    <span class="stats-label">❤️ Hearts:</span>
-                    <span class="stats-value" id="heartCount">0</span>
-                </div>
-                <div class="stats-row">
-                    <span class="stats-label">📅 Together:</span>
-                    <span class="stats-value" id="daysTogether">0 days</span>
-                </div>
-            </div>
-
-            <!-- Special -->
-            <div class="feature-card">
-                <div class="feature-title">🎵 Special</div>
-                <button class="action-btn success" onclick="sendLoveSong()">🎵 Send Love Song</button>
-                <button class="action-btn warning" onclick="sendVirtualHug()">🤗 Virtual Hug</button>
             </div>
         </div>
     </div>
@@ -558,79 +373,16 @@
         let currentStream = null;
         let facingMode = 'user';
         let isRecording = false;
-        let sidebarOpen = false;
 
         // Initialize
         document.addEventListener('DOMContentLoaded', function() {
             loadMessages();
             setupTypingListener();
             setupPresence();
-            updateStats();
             loadTheme();
-            setupSidebar();
-            
-            // Set anniversary date
-            const anniversaryDate = new Date('2024-01-01');
-            updateDaysTogether(anniversaryDate);
         });
 
-        // ==================== SIDEBAR FUNCTIONS ====================
-
-        function setupSidebar() {
-            const menuBtn = document.getElementById('menuBtn');
-            const closeBtn = document.getElementById('closeBtn');
-            const overlay = document.getElementById('overlay');
-            const sidebar = document.getElementById('sidebar');
-
-            menuBtn.addEventListener('click', function(e) {
-                e.preventDefault();
-                e.stopPropagation();
-                openSidebar();
-            });
-
-            closeBtn.addEventListener('click', function(e) {
-                e.preventDefault();
-                e.stopPropagation();
-                closeSidebar();
-            });
-
-            overlay.addEventListener('click', function(e) {
-                e.preventDefault();
-                e.stopPropagation();
-                closeSidebar();
-            });
-
-            // Prevent sidebar clicks from closing
-            sidebar.addEventListener('click', function(e) {
-                e.stopPropagation();
-            });
-        }
-
-        function openSidebar() {
-            sidebarOpen = true;
-            document.getElementById('sidebar').classList.add('open');
-            document.getElementById('overlay').classList.add('show');
-        }
-
-        function closeSidebar() {
-            sidebarOpen = false;
-            document.getElementById('sidebar').classList.remove('open');
-            document.getElementById('overlay').classList.remove('show');
-        }
-
         // ==================== THEME ====================
-
-        function setTheme(primary, secondary, element) {
-            document.documentElement.style.setProperty('--primary', primary);
-            document.documentElement.style.setProperty('--secondary', secondary);
-            
-            localStorage.setItem('theme', JSON.stringify({ primary, secondary }));
-            
-            document.querySelectorAll('.theme-color').forEach(el => el.classList.remove('active'));
-            element.classList.add('active');
-            
-            showNotification('Theme Changed', 'New theme applied!');
-        }
 
         function loadTheme() {
             const saved = localStorage.getItem('theme');
@@ -638,179 +390,6 @@
                 const theme = JSON.parse(saved);
                 document.documentElement.style.setProperty('--primary', theme.primary);
                 document.documentElement.style.setProperty('--secondary', theme.secondary);
-            }
-        }
-
-        // ==================== MOOD METER ====================
-
-        function setMood(mood) {
-            const messages = {
-                happy: 'I\'m feeling happy today! 😊',
-                sad: 'I\'m feeling a bit sad... 😔',
-                love: 'I\'m feeling so much love! 😍',
-                angry: 'I\'m feeling angry right now 😡',
-                tired: 'I\'m so tired... 😴',
-                excited: 'I\'m super excited! 🤩'
-            };
-
-            const message = {
-                text: messages[mood] || `My mood: ${mood}`,
-                sender: currentUser,
-                timestamp: Date.now(),
-                type: 'text'
-            };
-
-            db.ref('messages').push(message);
-            showNotification('Mood Shared', 'Your mood has been shared!');
-            
-            if (window.innerWidth <= 768) {
-                closeSidebar();
-            }
-        }
-
-        // ==================== LOCATION ====================
-
-        function shareLocation() {
-            if (!navigator.geolocation) {
-                showNotification('Error', 'Geolocation not supported');
-                return;
-            }
-
-            showLoading(true);
-            navigator.geolocation.getCurrentPosition(
-                (position) => {
-                    showLoading(false);
-                    const lat = position.coords.latitude;
-                    const lng = position.coords.longitude;
-                    const mapUrl = `https://www.google.com/maps?q=${lat},${lng}`;
-                    
-                    const message = {
-                        text: mapUrl,
-                        sender: currentUser,
-                        timestamp: Date.now(),
-                        type: 'location'
-                    };
-
-                    db.ref('messages').push(message);
-                    showNotification('Location Shared', 'Your location has been shared!');
-                    
-                    if (window.innerWidth <= 768) {
-                        closeSidebar();
-                    }
-                },
-                (error) => {
-                    showLoading(false);
-                    showNotification('Error', 'Could not get location: ' + error.message);
-                }
-            );
-        }
-
-        function requestLocation() {
-            const message = {
-                text: `📍 ${partnerName}, please share your location with me!`,
-                sender: currentUser,
-                timestamp: Date.now(),
-                type: 'text'
-            };
-            db.ref('messages').push(message);
-            showNotification('Request Sent', `Location request sent to ${partnerName}`);
-            
-            if (window.innerWidth <= 768) {
-                closeSidebar();
-            }
-        }
-
-        // ==================== EMERGENCY ====================
-
-        function sendEmergency() {
-            if (!confirm('🚨 Are you sure you want to send an EMERGENCY alert?')) return;
-
-            const message = {
-                text: `🚨 EMERGENCY ALERT from ${currentUser.toUpperCase()}! Please contact immediately! 🚨`,
-                sender: currentUser,
-                timestamp: Date.now(),
-                type: 'emergency'
-            };
-
-            db.ref('messages').push(message);
-            
-            if ('vibrate' in navigator) {
-                navigator.vibrate([500, 200, 500, 200, 500]);
-            }
-            
-            showNotification('🚨 EMERGENCY SENT', 'Emergency alert has been sent!');
-            
-            if (window.innerWidth <= 768) {
-                closeSidebar();
-            }
-        }
-
-        // ==================== QUICK SEND ====================
-
-        function quickSend(type) {
-            const messages = {
-                'miss you': 'I miss you so much! 💕',
-                'call me': 'Please call me when you can 📞',
-                'good night': 'Good night! Sleep well 🌙✨',
-                'good morning': 'Good morning! Have a great day ☀️',
-                'thinking of you': 'Thinking of you 💭❤️'
-            };
-
-            const message = {
-                text: messages[type],
-                sender: currentUser,
-                timestamp: Date.now(),
-                type: 'text'
-            };
-
-            db.ref('messages').push(message);
-            
-            if (window.innerWidth <= 768) {
-                closeSidebar();
-            }
-        }
-
-        // ==================== SPECIAL FEATURES ====================
-
-        function sendLoveSong() {
-            const songs = [
-                '🎵 Sending you a love song... 🎵',
-                '🎶 You are my sunshine 🎶',
-                '💕 This song reminds me of you 💕'
-            ];
-            
-            const message = {
-                text: songs[Math.floor(Math.random() * songs.length)],
-                sender: currentUser,
-                timestamp: Date.now(),
-                type: 'text'
-            };
-
-            db.ref('messages').push(message);
-            
-            if (window.innerWidth <= 768) {
-                closeSidebar();
-            }
-        }
-
-        function sendVirtualHug() {
-            const message = {
-                text: '🤗 *sends a big warm virtual hug* 🤗',
-                sender: currentUser,
-                timestamp: Date.now(),
-                type: 'text'
-            };
-
-            db.ref('messages').push(message);
-            
-            if ('vibrate' in navigator) {
-                navigator.vibrate([100, 50, 100, 50, 200]);
-            }
-            
-            showNotification('Hug Sent', 'Virtual hug sent with love!');
-            
-            if (window.innerWidth <= 768) {
-                closeSidebar();
             }
         }
 
@@ -830,7 +409,7 @@
             db.ref('messages').push(message);
             messageInput.value = '';
             hideEmojiPicker();
-            
+
             db.ref('typing/' + currentUser).set(false);
         }
 
@@ -860,9 +439,9 @@
             const div = document.createElement('div');
             div.className = `message ${isSent ? 'sent' : 'received'}`;
             div.id = 'msg-' + msg.id;
-            
+
             const time = new Date(msg.timestamp).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
-            
+
             let content = '';
             if (msg.type === 'image') {
                 content = `<img src="${msg.text}" alt="Image" onload="scrollToBottom()">`;
@@ -883,8 +462,6 @@
 
             const typingBubble = document.getElementById('typingBubble');
             container.insertBefore(div, typingBubble);
-            
-            updateStats();
         }
 
         function escapeHtml(text) {
@@ -900,7 +477,7 @@
                 const isTyping = snapshot.val();
                 const indicator = document.getElementById('typingIndicator');
                 const bubble = document.getElementById('typingBubble');
-                
+
                 if (isTyping) {
                     indicator.classList.add('show');
                     bubble.classList.add('show');
@@ -981,9 +558,9 @@
             canvas.width = video.videoWidth;
             canvas.height = video.videoHeight;
             canvas.getContext('2d').drawImage(video, 0, 0);
-            
+
             const imageData = canvas.toDataURL('image/jpeg');
-            
+
             const message = {
                 text: imageData,
                 sender: currentUser,
@@ -1015,7 +592,7 @@
                 mediaRecorder.onstop = () => {
                     const blob = new Blob(chunks, { type: 'audio/webm' });
                     const audioUrl = URL.createObjectURL(blob);
-                    
+
                     const message = {
                         text: audioUrl,
                         sender: currentUser,
@@ -1030,7 +607,7 @@
                 isRecording = true;
                 document.getElementById('micBtn').textContent = '⏹️';
                 document.getElementById('recordingIndicator').classList.add('show');
-                
+
                 recordSeconds = 0;
                 recordInterval = setInterval(() => {
                     recordSeconds++;
@@ -1060,7 +637,7 @@
         function sendHeart() {
             const hearts = ['❤️', '💕', '💖', '💗', '💓', '💝'];
             const heart = hearts[Math.floor(Math.random() * hearts.length)];
-            
+
             const message = {
                 text: heart,
                 sender: currentUser,
@@ -1079,7 +656,7 @@
             heart.style.left = Math.random() * window.innerWidth + 'px';
             heart.style.top = window.innerHeight + 'px';
             document.body.appendChild(heart);
-            
+
             setTimeout(() => heart.remove(), 1000);
         }
 
@@ -1120,29 +697,6 @@
             messageInput.focus();
         }
 
-        // ==================== STATS ====================
-
-        function updateStats() {
-            db.ref('messages').once('value', (snapshot) => {
-                const messages = snapshot.val() || {};
-                const msgArray = Object.values(messages);
-                
-                document.getElementById('msgCount').textContent = msgArray.length;
-                
-                const hearts = msgArray.filter(m => 
-                    m.text && (m.text.includes('❤️') || m.text.includes('💕') || m.text.includes('💖') || m.text.includes('💗') || m.text.includes('💓'))
-                ).length;
-                document.getElementById('heartCount').textContent = hearts;
-            });
-        }
-
-        function updateDaysTogether(startDate) {
-            const now = new Date();
-            const diffTime = Math.abs(now - startDate);
-            const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
-            document.getElementById('daysTogether').textContent = diffDays + ' days';
-        }
-
         // ==================== UTILITIES ====================
 
         function scrollToBottom() {
@@ -1153,14 +707,10 @@
             document.getElementById('notifTitle').textContent = title;
             document.getElementById('notifBody').textContent = body;
             document.getElementById('notification').classList.add('show');
-            
+
             setTimeout(() => {
                 document.getElementById('notification').classList.remove('show');
             }, 3000);
-        }
-
-        function showLoading(show) {
-            document.getElementById('loading').classList.toggle('show', show);
         }
 
         function logout() {
